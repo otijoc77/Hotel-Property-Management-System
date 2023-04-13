@@ -1,8 +1,13 @@
-import { Counter } from "./components/Counter";
-import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import { CompanyForm } from "./components/Forms/CompanyForm";
-import { CompanyTable } from "./components/Tables/CompanyTable";
+import CompanyPage from "./components/Pages/CompanyPage";
+import { CompanyList } from "./components/Lists/CompanyList";
+import HotelForm from "./components/Forms/HotelForm";
+import { RegisterForm } from "./components/Forms/RegisterForm";
+import { LoginForm } from "./components/Forms/LoginForm";
+import { HomePage } from "./components/Pages/HomePage";
+import { LocationForm } from "./components/Forms/LocationForms/LocationForm";
+import HotelPage from "./components/Pages/HotelPage";
 
 const AppRoutes = [
     {
@@ -10,20 +15,40 @@ const AppRoutes = [
         element: <Home />
     },
     {
-        path: '/counter',
-        element: <Counter />
-    },
-    {
-        path: '/fetch-data',
-        element: <FetchData />
+        path: '/home',
+        element: <HomePage />
     },
     {
         path: '/company-register',
         element: <CompanyForm />
     },
     {
+        path: '/company/:id',
+        element: <CompanyPage />
+    },
+    {
         path: '/company-list',
-        element: <CompanyTable />
+        element: <CompanyList />
+    },
+    {
+        path: '/company/:companyId/hotel-register',
+        element: <HotelForm />
+    },
+    {
+        path: '/hotel/:id',
+        element: <HotelPage />
+    },
+    {
+        path: '/location-register',
+        element: <LocationForm />
+    },
+    {
+        path: '/login',
+        element: <LoginForm />
+    },
+    {
+        path: '/register',
+        element: <RegisterForm />
     },
 ];
 

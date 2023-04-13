@@ -2,12 +2,7 @@
 
 namespace HotelPMS.Repositories
 {
-    public interface ICompanyRepository
+    public interface ICompanyRepository : IRepositoryBase<Company>
     {
-        Task<Company> GetAsync(int id);
-        Task<List<Company>> GetAllAsync();
-        Task<Company> AddAsync(Company item);
-        Task<Company> DeleteAsync(int id);
-        Task<Company> UpdateAsync(Company item);
     }
 }

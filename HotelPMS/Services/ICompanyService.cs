@@ -2,10 +2,7 @@
 
 namespace HotelPMS.Services
 {
-    public interface ICompanyService
+    public interface ICompanyService : IServiceBase<Company>
     {
-        Task<Company> GetByIdAsync(int id);
-        Task<List<Company>> GetAllAsync();
-        Task<Company> CreateAsync(Company company);
     }
 }

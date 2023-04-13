@@ -2,6 +2,8 @@ using Microsoft.EntityFrameworkCore;
 using HotelPMS.Models;
 using HotelPMS.Repositories;
 using HotelPMS.Services;
+using System.Text.Json.Serialization;
+using HotelPMS.Hubs;
 
 namespace HotelPMS
 {
@@ -13,21 +15,34 @@ namespace HotelPMS
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
+            builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
+
+            builder.Services.AddTransient<ICompanyService, CompanyService>();
+            builder.Services.AddTransient<IHotelService, HotelService>();
+            builder.Services.AddTransient<IFloorService, FloorService>();
+            builder.Services.AddTransient<IRoomService, RoomService>();
+            builder.Services.AddTransient<IReservationService, ReservationService>();
+            builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<ICountryService, CountryService>();
+
+            builder.Services.AddDbContext<Context>(options =>
+            {
+                options.UseInMemoryDatabase("PMS");
+            });
+
+            builder.Services.AddSignalR();
+
+            builder.Services.AddControllers()
+            .AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
             builder.Services.AddControllersWithViews();
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod()
                  .AllowAnyHeader().SetIsOriginAllowed(origin => true));
-            });
-
-            builder.Services.AddTransient<ICompanyRepository, CompanyRepository>();
-            builder.Services.AddTransient<ICompanyService, CompanyService>();
-
-            builder.Services.AddDbContext<Context>(options =>
-            {
-                options.UseInMemoryDatabase("PMS");
             });
 
             var app = builder.Build();
@@ -53,6 +68,7 @@ namespace HotelPMS
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller}/{action=Index}/{id?}");
+            app.MapHub<RequestHub>("/hubs/requests");
 
             app.MapFallbackToFile("index.html");
 

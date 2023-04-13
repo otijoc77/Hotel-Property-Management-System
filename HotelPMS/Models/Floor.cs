@@ -7,10 +7,10 @@ namespace HotelPMS.Models
         public int Id { get; set; }
         public int Number { get; set; }
         public double? Area { get; set; }
-        //TODO: check type
-        public List<double> Border { get; set; }
+        public string Border { get; set; }
+        public List<Room> Rooms { get; set; } = new List<Room>();
 
         // Foreign keys
-        public Hotel Hotel { get; set; }
+        public int HotelId { get; set; }
     }
 }

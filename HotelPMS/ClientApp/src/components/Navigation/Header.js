@@ -25,18 +25,18 @@ export class Header extends Component {
         return (
             <header>
                 <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3 color" container light>
-                    <NavbarBrand className="text-light" tag={Link} to="/">HotelPMS</NavbarBrand>
+                    <NavbarBrand className="text-light title" tag={Link} to="/">HotelPMS</NavbarBrand>
                     <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
                     <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
                         <ul className="navbar-nav flex-grow">
                             <NavItem>
-                                <NavLink tag={Link} className="text-light" to="/">Home</NavLink>
+                                <NavLink tag={Link} className="text-light" to="/home">Home</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink tag={Link} className="text-light" to="/counter">Counter</NavLink>
+                                <NavLink tag={Link} className="text-light" to="/login">Login</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink tag={Link} className="text-light" to="/fetch-data">Fetch data</NavLink>
+                                <NavLink tag={Link} className="text-light" to="/register">Register</NavLink>
                             </NavItem>
                         </ul>
                     </Collapse>

@@ -1,29 +1,56 @@
 ﻿using HotelPMS.Models;
 using HotelPMS.Repositories;
+using System.Linq.Expressions;
 
 namespace HotelPMS.Services
 {
     public class CompanyService : ICompanyService
     {
-        private readonly ICompanyRepository _companyRepository;
-        public CompanyService(ICompanyRepository repository)
+        private readonly IRepositoryWrapper _repository;
+
+        public CompanyService(IRepositoryWrapper repository)
         {
-            _companyRepository = repository;
+            _repository = repository;
         }
 
         public Task<Company> CreateAsync(Company company)
         {
-            return _companyRepository.AddAsync(company);
+            return _repository.Company.AddAsync(company);
+        }
+
+        public async Task<Company> DeleteAsync(int id)
+        {
+            List<Hotel> hotels = await _repository.Hotel.GetByConditionAsync(hotel => hotel.CompanyId == id);
+            foreach (Hotel hotel in hotels)
+            {
+                await _repository.Hotel.DeleteAsync(hotel.Id);
+            }
+            Company company = await _repository.Company.DeleteAsync(id);
+            _repository.Save();
+            return company;
         }
 
         public Task<List<Company>> GetAllAsync()
         {
-            return _companyRepository.GetAllAsync();
+            return _repository.Company.GetAllAsync();
         }
 
-        public Task<Company> GetByIdAsync(int id)
+        public Task<List<Company>> GetByConditionAsync(Expression<Func<Company, bool>> expression)
         {
-            return _companyRepository.GetAsync(id);
+            return _repository.Company.GetByConditionAsync(expression);
+        }
+
+        public async Task<Company> GetByIdAsync(int id)
+        {
+            Company company = await _repository.Company.GetAsync(id);
+            company.Hotels = await _repository.Hotel.GetByConditionAsync(hotel => hotel.CompanyId == company.Id);
+            company.Employees = await _repository.User.GetByConditionAsync(user => user.CompanyId == company.Id);
+            return company;
+        }
+
+        public Task<Company> UpdateAsync(Company company)
+        {
+            return _repository.Company.UpdateAsync(company);
         }
     }
 }

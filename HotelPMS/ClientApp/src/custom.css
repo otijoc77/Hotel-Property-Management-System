@@ -13,6 +13,12 @@ code {
   border-color: #1861ac;
 }
 
+.btn-red {
+    color: #fff;
+    background-color: #b30000;
+    border-color: #b30000;
+}
+
 .table-head {
     background-color: #b30000;
     color: white;
@@ -20,4 +26,57 @@ code {
 
 .table {
     border-radius: 6px;
+}
+
+.form-group, .row {
+    margin-bottom: 10px !important;
+}
+
+label {
+    margin-bottom: 3px;
+}
+
+.w-10 {
+    width: 10%;
+}
+
+.w-5 {
+    width: 5%;
+}
+
+.w-200p {
+    width: 200px;
+}
+
+.w-100p {
+    width: 100px;
+}
+
+.center {
+    margin: auto;
+    width: 75%;
+}
+
+.d-table {
+    display: table;
+}
+
+.d-table-cell {
+    display: table-cell;
+}
+
+.text-r {
+    text-align: right;
+}
+
+.d-block {
+    display: block;
+}
+
+.margin-b-5 {
+    margin-bottom: 5px;
+}
+
+.margin-2 {
+    margin: 2px;
 }

@@ -5,11 +5,13 @@ namespace HotelPMS.Models
     public class Room
     {
         public int Id { get; set; }
+        public int Number { get; set; }
         public double Area { get; set; }
         public string Type { get; set; }
-        public List<double> Border { get; set; }
+        public string? Image { get; set; }
+        public string Border { get; set; }
 
         // Foreign keys
-        public Floor Floor { get; set; }
+        public int FloorId { get; set; }
     }
 }
