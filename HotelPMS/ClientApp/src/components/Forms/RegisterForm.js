@@ -68,23 +68,23 @@ export function RegisterForm() {
                 <h1 id="header" >Register</h1>
                 <form>
                     <div className="form-group">
-                        <label for="username">Username:</label>
+                        <label>Username:</label>
                         <input type="text" name="username" className="form-control w-50" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
                     </div>
                     <div className="form-group">
-                        <label for="password">Password:</label>
+                        <label>Password:</label>
                         <input type="password" name="password" className="form-control w-50" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     </div>
                     <div className="form-group">
-                        <label for="name">Name:</label>
+                        <label>Name:</label>
                         <input type="text" name="name" className="form-control w-50" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
                     </div>
                     <div className="form-group">
-                        <label for="surname">Surname:</label>
+                        <label>Surname:</label>
                         <input type="text" name="surname" className="form-control w-50" placeholder="Surname" value={surname} onChange={(e) => setSurname(e.target.value)} required />
                     </div>
                     <div className="form-group">
-                        <label for="gender">Gender:</label>
+                        <label>Gender:</label>
                         <select name="gender" className="form-select w-25" value={gender} onChange={(e) => setGender(e.target.value)}>
                             <option defaultValue value="3">-</option>
                             <option value="0">woman</option>
@@ -93,11 +93,11 @@ export function RegisterForm() {
                         </select>
                     </div>
                     <div className="form-group">
-                        <label for="email">Email:</label>
+                        <label>Email:</label>
                         <input type="email" name="email" className="form-control w-50" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div className="form-group">
-                        <label for="number">Phone number:</label>
+                        <label>Phone number:</label>
                         <input type="text" name="number" className="form-control w-50" placeholder="Phone number" value={number} onChange={(e) => setPhoneNum(e.target.value)} />
                     </div>
                     <button type="submit" className="btn btn-dark" onClick={handleClick}>Register</button>

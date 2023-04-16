@@ -9,6 +9,7 @@ namespace HotelPMS.Models
         public ServiceType Type { get; set; }
 
         // Foreign keys
-        public Reservation Sender { get; set; }
+        public int SenderId { get; set; }
+        public Reservation? Sender { get; set; }
     }
 }

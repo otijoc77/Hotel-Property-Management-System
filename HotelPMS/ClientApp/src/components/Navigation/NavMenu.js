@@ -49,6 +49,18 @@ export class NavMenu extends Component {
                         </AccordionBody>
                     </AccordionItem>
                 </UncontrolledAccordion>
+                <UncontrolledAccordion flush stayOpen defaultOpen={["4"]}>
+                    <AccordionItem>
+                        <AccordionHeader targetId="4">
+                            <b>Users</b>
+                        </AccordionHeader>
+                        <AccordionBody accordionId="4">
+                            <NavItem>
+                                <NavLink tag={Link} className="text-dark" to="/users">User List</NavLink>
+                            </NavItem>
+                        </AccordionBody>
+                    </AccordionItem>
+                </UncontrolledAccordion>
             </ListGroup>
         );
     }

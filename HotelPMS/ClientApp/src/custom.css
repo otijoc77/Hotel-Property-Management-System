@@ -52,6 +52,11 @@ label {
     width: 100px;
 }
 
+.canvas-card {
+    width: 1000px;
+    height: 1000px;
+}
+
 .center {
     margin: auto;
     width: 75%;
@@ -69,6 +74,10 @@ label {
     text-align: right;
 }
 
+.text-c {
+    text-align: center;
+}
+
 .d-block {
     display: block;
 }
@@ -79,4 +88,8 @@ label {
 
 .margin-2 {
     margin: 2px;
+}
+
+.bold {
+    font-weight: bold;
 }

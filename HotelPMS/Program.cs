@@ -23,7 +23,10 @@ namespace HotelPMS
             builder.Services.AddTransient<IRoomService, RoomService>();
             builder.Services.AddTransient<IReservationService, ReservationService>();
             builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IAccountService, AccountService>();
             builder.Services.AddTransient<ICountryService, CountryService>();
+            builder.Services.AddTransient<IRequestService, RequestService>();
+            builder.Services.AddTransient<IReviewService, ReviewService>();
 
             builder.Services.AddDbContext<Context>(options =>
             {

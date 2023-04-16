@@ -23,14 +23,24 @@ namespace HotelPMS.Services
             return _repository.User.DeleteAsync(id);
         }
 
-        public Task<List<User>> GetAllAsync()
+        public async Task<List<User>> GetAllAsync()
         {
-            return _repository.User.GetAllAsync();
+            List<User> users = await _repository.User.GetAllAsync();
+            foreach (User item in users)
+            {
+                item.Account = await _repository.Account.GetAsync(item.AccountId);
+            }
+            return users;
         }
 
-        public Task<List<User>> GetByConditionAsync(Expression<Func<User, bool>> expression)
+        public async Task<List<User>> GetByConditionAsync(Expression<Func<User, bool>> expression)
         {
-            return _repository.User.GetByConditionAsync(expression);
+            List<User> users = await _repository.User.GetByConditionAsync(expression);
+            foreach (User item in users)
+            {
+                item.Account = await _repository.Account.GetAsync(item.AccountId);
+            }
+            return users;
         }
 
         public Task<User> GetByIdAsync(int id)

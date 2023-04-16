@@ -1,5 +1,5 @@
 ﻿using HotelPMS.Models;
-using HotelPMS.Repositories;
+using HotelPMS.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelPMS.Controllers
@@ -9,31 +9,43 @@ namespace HotelPMS.Controllers
     public class AccountsController : ControllerBase
     {
         private readonly ILogger<AccountsController> _logger;
-        private readonly IRepositoryWrapper _accountRepository;
+        private readonly IAccountService _accountService;
 
-        public AccountsController(ILogger<AccountsController> logger, IRepositoryWrapper repository)
+        public AccountsController(ILogger<AccountsController> logger, IAccountService service)
         {
             _logger = logger;
-            _accountRepository = repository;
+            _accountService = service;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAccounts()
         {
-            return await _accountRepository.Account.GetAllAsync();
+            return await _accountService.GetAllAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccount(int id)
         {
-            return await _accountRepository.Account.GetAsync(id);
+            return await _accountService.GetByIdAsync(id);
         }
 
         [HttpPost]
         public async Task<ActionResult<Account>> PostAccount(Account account)
         {
-            await _accountRepository.Account.AddAsync(account);
+            await _accountService.CreateAsync(account);
             return CreatedAtAction(nameof(GetAccount), new { id = account.Id }, account);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Account>> DeleteAccount(int id)
+        {
+            return await _accountService.DeleteAsync(id);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<Account>> PutAccount(Account account)
+        {
+            return await _accountService.UpdateAsync(account);
         }
     }
 }

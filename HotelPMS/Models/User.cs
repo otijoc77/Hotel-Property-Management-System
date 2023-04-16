@@ -15,6 +15,5 @@ namespace HotelPMS.Models
         public int AccountId { get; set; }
         public Account? Account { get; set; }
         public int? CompanyId { get; set; }
-        public Company? Company { get; set; }
     }
 }

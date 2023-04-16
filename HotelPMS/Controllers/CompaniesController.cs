@@ -37,5 +37,17 @@ namespace HotelPMS.Controllers
             await _companyService.CreateAsync(company);
             return CreatedAtAction(nameof(GetCompany), new { id = company.Id }, company);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Company>> DeleteCompany(int id)
+        {
+            return await _companyService.DeleteAsync(id);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<Company>> PutCompany(Company company)
+        {
+            return await _companyService.UpdateAsync(company);
+        }
     }
 }

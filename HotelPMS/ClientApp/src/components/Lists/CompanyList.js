@@ -9,7 +9,7 @@ export class CompanyList extends Component {
     }
 
     async populateCompanyData() {
-        const response = await fetch('api/companies');
+        const response = await fetch('api/hotels');
         const data = await response.json();
         this.setState({ companies: data, loading: false });
     }

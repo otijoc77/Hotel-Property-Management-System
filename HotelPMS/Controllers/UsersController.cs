@@ -35,5 +35,17 @@ namespace HotelPMS.Controllers
             await _userService.CreateAsync(user);
             return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<User>> DeleteUser(int id)
+        {
+            return await _userService.DeleteAsync(id);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<User>> PutUser(User user)
+        {
+            return await _userService.UpdateAsync(user);
+        }
     }
 }

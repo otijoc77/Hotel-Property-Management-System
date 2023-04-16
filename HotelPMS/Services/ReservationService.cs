@@ -15,12 +15,20 @@ namespace HotelPMS.Services
 
         public Task<Reservation> CreateAsync(Reservation item)
         {
+            item.Registered = DateTime.UtcNow;
             return _repository.Reservation.AddAsync(item);
         }
 
-        public Task<Reservation> DeleteAsync(int id)
+        public async Task<Reservation> DeleteAsync(int id)
         {
-            return _repository.Reservation.DeleteAsync(id);
+            List<Request> requests = await _repository.Request.GetByConditionAsync(request => request.SenderId == id);
+            foreach (Request request in requests)
+            {
+                await _repository.Request.DeleteAsync(request.Id);
+            }
+            Reservation reservation = await _repository.Reservation.DeleteAsync(id);
+            _repository.Save();
+            return reservation;
         }
 
         public Task<List<Reservation>> GetAllAsync()

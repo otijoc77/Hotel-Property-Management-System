@@ -17,7 +17,7 @@ class CompanyPage extends Component {
             id: this.props.params.id,
             loaded: false,
             link_hotel: '/company/' + this.props.params.id + '/hotel-register',
-            link_company: '/company/' + this.props.params.id + '/company-register'
+            link_company: '/company/' + this.props.params.id + '/edit'
         };
     }
 
@@ -61,10 +61,12 @@ class CompanyPage extends Component {
                     </Row>
                     <Row>
                         <button className="btn btn-dark w-100p margin-2" onClick={e => window.location.href = this.state.link_company} >Edit</button>
-                        <button className="btn btn-danger btn-red w-100p margin-2" onClick={this.deleteClick()} >Delete</button>
+                        <button className="btn btn-danger btn-red w-100p margin-2" onClick={e => this.deleteClick()} >Delete</button>
                     </Row>
-                    <button className="btn btn-dark w-200p margin-b-5" onClick={e => window.location.href = this.state.link_hotel} >Register new hotel</button>
-                    {this.state.loaded && < HotelTable companyHotels={this.state.company.hotels} />}
+                    <Row>
+                        <button className="btn btn-dark w-200p margin-b-5 margin-2" onClick={e => window.location.href = this.state.link_hotel} >Register new hotel</button>
+                    </Row>
+                    {this.state.loaded && <HotelTable companyHotels={this.state.company.hotels}/>}
                 </Container>
             </Layout>
         )

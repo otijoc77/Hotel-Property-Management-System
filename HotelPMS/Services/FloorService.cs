@@ -28,9 +28,14 @@ namespace HotelPMS.Services
             return _repository.Floor.GetAllAsync();
         }
 
-        public Task<List<Floor>> GetByConditionAsync(Expression<Func<Floor, bool>> expression)
+        public async Task<List<Floor>> GetByConditionAsync(Expression<Func<Floor, bool>> expression)
         {
-            return _repository.Floor.GetByConditionAsync(expression);
+            List<Floor> floors = await _repository.Floor.GetByConditionAsync(expression);
+            foreach (Floor item in floors)
+            {
+                item.Rooms = await _repository.Room.GetByConditionAsync(room => room.FloorId == item.Id);
+            }
+            return floors;
         }
 
         public Task<Floor> GetByIdAsync(int id)

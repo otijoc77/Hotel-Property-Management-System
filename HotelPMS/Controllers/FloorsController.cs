@@ -23,6 +23,12 @@ namespace HotelPMS.Controllers
             return await _floorService.GetAllAsync();
         }
 
+        [HttpGet("hotel/{hotelId}")]
+        public async Task<ActionResult<IEnumerable<Floor>>> GetFloors(int hotelId)
+        {
+            return await _floorService.GetByConditionAsync(floor => floor.HotelId == hotelId);
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Floor>> GetFloor(int id)
         {
@@ -30,10 +36,22 @@ namespace HotelPMS.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Room>> PostFloor(Floor floor)
+        public async Task<ActionResult<Floor>> PostFloor(Floor floor)
         {
             await _floorService.CreateAsync(floor);
             return CreatedAtAction(nameof(GetFloor), new { id = floor.Id }, floor);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Floor>> DeleteFloor(int id)
+        {
+            return await _floorService.DeleteAsync(id);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<Floor>> PutFloor(Floor floor)
+        {
+            return await _floorService.UpdateAsync(floor);
         }
     }
 }

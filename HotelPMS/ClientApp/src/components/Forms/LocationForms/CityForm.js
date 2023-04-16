@@ -42,11 +42,11 @@ export function CityForm() {
             <h1 id="header" >Register city</h1>
             <form>
                 <div className="form-group">
-                    <label for="name">Name:</label>
+                    <label>Name:</label>
                     <input type="text" name="name" className="form-control w-50" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
                 </div>
                 <div className="form-group">
-                    <label for="country">Country:</label>
+                    <label>Country:</label>
                     <select name="country" className="form-select w-50" value={country} onChange={(e) => setCountry(e.target.value)}>
                         <option defaultValue="">Select country</option>
                         {loaded && countries.map((country) => <option value={country.id} key={country.id}>{country.name}</option>)}

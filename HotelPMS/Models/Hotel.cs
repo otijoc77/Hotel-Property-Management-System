@@ -14,9 +14,11 @@ namespace HotelPMS.Models
         public HotelType Type { get; set; }
         public RoomClassification RoomClassification { get; set; }
         public List<Floor> Floors { get; set; } = new List<Floor>();
+        public List<Review> Reviews { get; set; } = new List<Review>();
 
         // Foreign keys
         public int CompanyId { get; set; }
         public int CityId { get; set; }
+        public City? City { get; set; }
     }
 }

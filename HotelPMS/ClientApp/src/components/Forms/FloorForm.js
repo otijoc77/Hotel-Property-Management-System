@@ -1,29 +1,88 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useState, Component } from 'react';
+import { useParams } from "react-router-dom";
+import { Col, Row } from 'reactstrap';
 import '../../custom.css';
 import { Layout } from '../Layout';
 
-export function FloorForm() {
+function FloorFormFunction(hotelId) {
+    const link_back = "/hotel/" + hotelId.hotelId + "/floorplan";
     const [number, setNumber] = useState(0);
     const [area, setArea] = useState(0);
+    const [image, setImage] = useState("");
+
+    async function handleClick() {
+        if (number != 0 || image != "") {
+            await fetch('api/floors', {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify({
+                    number: number,
+                    area: area,
+                    floorplan: image,
+                    hotelId: hotelId.hotelId,
+                })
+            })
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+        }
+    }
 
     return (
         <Layout>
-            <h1 id="header" >Register floor</h1>
+            <Row>
+                <Col>
+                    <h1 id="header" >Register floor</h1>
+                </Col>
+                <Col>
+                    <button className="btn btn-dark margin-2" onClick={e => window.location.href = link_back} >Back</button>
+                </Col>
+            </Row>
             <form>
-                <div class="row w-50">
-                    <div class="form-group">
-                        <label for="number">Number:</label>
-                        <input type="number" name="number" class="form-control w-50" placeholder="Number" value={number} onChange={(e) => setNumber(e.target.value)} required />
+                <div className="row w-100">
+                    <div className="form-group">
+                        <label>Number:</label>
+                        <input type="number" name="number" className="form-control w-25" value={number} onChange={(e) => setNumber(e.target.value)} required />
                     </div>
-                    <div class="form-group">
-                        <label for="area">Area:</label>
-                        <input type="number" name="area" class="form-control w-50" placeholder="Area" value={area} onChange={(e) => setArea(e.target.value)} required />
+                    <div className="form-group">
+                        <label>Area (m<sup>2</sup>):</label>
+                        <input type="number" name="area" className="form-control w-25" value={area} onChange={(e) => setArea(e.target.value)} />
                     </div>
-                    <div>
+                    <div className="form-group">
+                        <label>Image url:</label>
+                        <input type="text" name="image" className="form-control w-75" placeholder="Image" value={image} onChange={(e) => setImage(e.target.value)} required />
+                        <small id="imageHelp" className="form-text text-muted">Floorplan image url.</small>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-dark" onClick={handleClick}>Register</button>
+                <button type="submit" className="btn btn-dark" onClick={handleClick}>Register</button>
             </form>
         </Layout>
     );
 }
+
+function withParams(Component) {
+    return props => <Component {...props} params={useParams()} />;
+}
+
+class FloorForm extends Component {
+    constructor(props) {
+        super(props);
+        console.log(this.props);
+        this.state = { hotelId: this.props.params.hotelId };
+    }
+
+    render() {
+        return (
+            <FloorFormFunction hotelId={this.state.hotelId} />
+        )
+    };
+}
+
+export default withParams(FloorForm);

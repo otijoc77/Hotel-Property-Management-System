@@ -8,7 +8,7 @@
         public string? Text { get; set; }
 
         // Foreign keys
-        public Hotel Hotel { get; set; }
-        public User User { get; set; }
+        public int HotelId { get; set; }
+        public int UserId { get; set; }
     }
 }

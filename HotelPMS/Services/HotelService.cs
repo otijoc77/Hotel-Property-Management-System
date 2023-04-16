@@ -33,9 +33,12 @@ namespace HotelPMS.Services
             return _repository.Hotel.GetByConditionAsync(expression);
         }
 
-        public Task<Hotel> GetByIdAsync(int id)
+        public async Task<Hotel> GetByIdAsync(int id)
         {
-            return _repository.Hotel.GetAsync(id);
+            Hotel hotel = await _repository.Hotel.GetAsync(id);
+            hotel.Floors = await _repository.Floor.GetByConditionAsync(floor => floor.HotelId == hotel.Id);
+            hotel.Reviews = await _repository.Review.GetByConditionAsync(review => review.HotelId == hotel.Id);
+            return hotel;
         }
 
         public Task<Hotel> UpdateAsync(Hotel item)

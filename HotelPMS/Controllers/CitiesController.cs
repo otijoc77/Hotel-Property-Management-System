@@ -35,5 +35,17 @@ namespace HotelPMS.Controllers
             await _cityRepository.City.AddAsync(city);
             return CreatedAtAction(nameof(GetCity), new { id = city.Id }, city);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<City>> DeleteCity(int id)
+        {
+            return await _cityRepository.City.DeleteAsync(id);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<City>> PutCity(City city)
+        {
+            return await _cityRepository.City.UpdateAsync(city);
+        }
     }
 }

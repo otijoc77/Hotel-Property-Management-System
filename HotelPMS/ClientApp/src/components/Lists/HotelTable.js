@@ -8,8 +8,6 @@ export class HotelTable extends Component {
     }
 
     async populateHotelData() {
-        console.log('hotels');
-        console.log(this.props.companyHotels);
         if (this.props.companyHotels == null) {
             const response = await fetch('api/hotels');
             const data = await response.json();

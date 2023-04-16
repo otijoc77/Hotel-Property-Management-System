@@ -30,7 +30,7 @@ export function CountryForm() {
             <h1 id="header" >Register country</h1>
             <form>
                 <div className="form-group">
-                    <label for="name">Name:</label>
+                    <label>Name:</label>
                     <input type="text" name="name" className="form-control w-50" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
                 </div>
                 <button type="submit" className="btn btn-dark" disabled={name == ""} onClick={handleClick}>Add</button>

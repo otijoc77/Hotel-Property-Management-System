@@ -35,5 +35,17 @@ namespace HotelPMS.Controllers
             await _countryService.CreateAsync(country);
             return CreatedAtAction(nameof(GetCountry), new { id = country.Id }, country);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Country>> DeleteCountry(int id)
+        {
+            return await _countryService.DeleteAsync(id);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<Country>> PutCountry(Country country)
+        {
+            return await _countryService.UpdateAsync(country);
+        }
     }
 }

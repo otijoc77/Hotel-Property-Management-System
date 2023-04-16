@@ -20,11 +20,8 @@ namespace HotelPMS.Services
 
         public async Task<Company> DeleteAsync(int id)
         {
-            List<Hotel> hotels = await _repository.Hotel.GetByConditionAsync(hotel => hotel.CompanyId == id);
-            foreach (Hotel hotel in hotels)
-            {
-                await _repository.Hotel.DeleteAsync(hotel.Id);
-            }
+            await DeleteHotels(id);
+            await DeleteEmployees(id);
             Company company = await _repository.Company.DeleteAsync(id);
             _repository.Save();
             return company;
@@ -51,6 +48,26 @@ namespace HotelPMS.Services
         public Task<Company> UpdateAsync(Company company)
         {
             return _repository.Company.UpdateAsync(company);
+        }
+
+        private async Task<List<Hotel>> DeleteHotels(int id)
+        {
+            List<Hotel> hotels = await _repository.Hotel.GetByConditionAsync(hotel => hotel.CompanyId == id);
+            foreach (Hotel hotel in hotels)
+            {
+                await _repository.Hotel.DeleteAsync(hotel.Id);
+            }
+            return hotels;
+        }
+
+        private async Task<List<User>> DeleteEmployees(int id)
+        {
+            List<User> employees = await _repository.User.GetByConditionAsync(user => user.CompanyId == id);
+            foreach (User user in employees)
+            {
+                await _repository.User.DeleteAsync(user.Id);
+            }
+            return employees;
         }
     }
 }
