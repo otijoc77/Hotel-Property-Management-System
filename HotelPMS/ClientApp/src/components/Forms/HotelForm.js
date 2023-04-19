@@ -34,8 +34,10 @@ function HotelFormFunction(companyId) {
             });
     }, []);
 
-    async function handleClick() {
+    async function handleClick(e) {
+        e.preventDefault();
         const company = companyId.companyId;
+        window.location.href = link_back;
         if (name != "" || address != "") {
             await fetch('api/hotels', {
                 method: 'POST',
@@ -127,7 +129,7 @@ function HotelFormFunction(companyId) {
                         </select>
                     </div>
                 </div>
-                <button type="submit" className="btn btn-dark" disabled={latitude < MIN_LATITUDE_LENGTH || latitude > MAX_LATITUDE_LENGTH || longitude < MIN_LONGITUDE_LENGTH || longitude > MAX_LONGITUDE_LENGTH || roomClassification == "" || type == "" || city == ""} onClick={handleClick}>Register</button>
+                <button type="button" className="btn btn-dark" disabled={latitude < MIN_LATITUDE_LENGTH || latitude > MAX_LATITUDE_LENGTH || longitude < MIN_LONGITUDE_LENGTH || longitude > MAX_LONGITUDE_LENGTH || roomClassification == "" || type == "" || city == ""} onClick={(e) => handleClick(e)}>Register</button>
             </form>
         </Layout>
     );

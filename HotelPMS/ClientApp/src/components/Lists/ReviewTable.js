@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import '../../custom.css';
 import ReviewForm from '../Forms/ReviewForm';
+import Rating from '@mui/material/Rating';
 
 export class ReviewTable extends Component {
     constructor(props) {
@@ -13,11 +14,12 @@ export class ReviewTable extends Component {
 
     componentDidMount() {
         this.setState({ reviews: this.props.hotelReviews, loading: false });
+        console.log(this.props)
     }
 
     static renderReviewsTable(reviews) {
         return (
-            <div className='card'>
+            <div className='card w-75'>
                 <table className='table table-striped mb-0' aria-labelledby="tabelLabel">
                     <thead className='table-head'>
                         <tr>
@@ -28,7 +30,7 @@ export class ReviewTable extends Component {
                     <tbody>
                         {reviews.map(review =>
                             <tr key={review.id}>
-                                <td>{review.rating}</td>
+                                <td><Rating name="rating" value={review.rating} size="small" readOnly /></td>
                                 <td>{review.text}</td>
                             </tr>
                         )}

@@ -7,7 +7,9 @@ export function CityForm() {
     const [countries, setCountries] = useState([]);
     const [loaded, setLoaded] = useState(false);
 
-    async function handleClick() {
+    async function handleClick(e) {
+        e.preventDefault();
+        window.location.reload(false);
         await fetch('api/cities', {
             method: 'POST',
             mode: 'cors',
@@ -25,7 +27,7 @@ export function CityForm() {
             })
             .catch(error => {
                 console.log(error)
-            })
+            });
     }
 
     useEffect(() => {
@@ -52,7 +54,7 @@ export function CityForm() {
                         {loaded && countries.map((country) => <option value={country.id} key={country.id}>{country.name}</option>)}
                     </select>
                 </div>
-                <button type="submit" className="btn btn-dark" disabled={name == "" || countries == [] || country == ""} onClick={handleClick}>Add</button>
+                <button type="button" className="btn btn-dark" disabled={name == "" || countries == [] || country == ""} onClick={(e) => handleClick(e)}>Add</button>
             </form>
         </div>
     );

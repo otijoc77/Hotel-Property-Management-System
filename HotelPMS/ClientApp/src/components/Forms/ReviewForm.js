@@ -7,7 +7,9 @@ export function ReviewFormFunction(hotelId) {
     const [rating, setRating] = useState(0);
     const [text, setText] = useState("");
 
-    async function handleClick() {
+    async function handleClick(e) {
+        e.preventDefault();
+        window.location.reload(false);
         await fetch('api/reviews', {
             method: 'POST',
             mode: 'cors',
@@ -41,7 +43,7 @@ export function ReviewFormFunction(hotelId) {
                     <label>Comment:</label>
                     <textarea name="text" className="form-control w-75" placeholder="Comment" value={text} onChange={(e) => setText(e.target.value)} />
                 </div>
-                <button type="submit" className="btn btn-dark" onClick={handleClick}>Submit</button>
+                <button type="button" className="btn btn-dark" onClick={(e) => handleClick(e)}>Submit</button>
             </form>
         </div>
     );

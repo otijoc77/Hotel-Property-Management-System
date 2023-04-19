@@ -16,13 +16,14 @@ class CompanyPage extends Component {
             company: { id: 0, code: "", name: "", description: "", hotels: [] },
             id: this.props.params.id,
             loaded: false,
+            link_back: '/company-list',
             link_hotel: '/company/' + this.props.params.id + '/hotel-register',
             link_company: '/company/' + this.props.params.id + '/edit'
         };
     }
 
-    refreshList() {
-        fetch('api/companies/' + this.state.id)
+    async refreshList() {
+        await fetch('api/companies/' + this.state.id)
             .then(response => response.json())
             .then(data => {
                 this.setState({ company: data, loaded: true });
@@ -30,8 +31,9 @@ class CompanyPage extends Component {
             })
     }
 
-    deleteClick() {
-        fetch('api/companies/' + this.state.id, {
+    async deleteClick() {
+        window.location.href = this.state.link_back;
+        await fetch('api/companies/' + this.state.id, {
             method: 'DELETE',
         })
             .then(response => {

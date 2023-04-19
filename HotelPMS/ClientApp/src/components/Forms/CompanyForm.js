@@ -9,7 +9,9 @@ export function CompanyForm() {
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
 
-    async function handleClick() {
+    async function handleClick(e) {
+        e.preventDefault();
+        window.location.href = link_back;
         await fetch('api/companies', {
             method: 'POST',
             mode: 'cors',
@@ -28,7 +30,7 @@ export function CompanyForm() {
             })
             .catch(error => {
                 console.log(error)
-            })
+            });
     }
 
     return (
@@ -52,7 +54,7 @@ export function CompanyForm() {
                     <label>Description:</label>
                     <textarea name="description" className="form-control w-75" placeholder="Description" value={description} onChange={(e) => setDescription(e.target.value)} />
                 </div>
-                <button type="submit" className="btn btn-dark" disabled={name == "" || code == ""} onClick={handleClick}>Register</button>
+                <button type="button" className="btn btn-dark" disabled={name == "" || code == ""} onClick={(e) => handleClick(e)}>Register</button>
             </form>
         </Layout>
     );

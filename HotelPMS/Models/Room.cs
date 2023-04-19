@@ -8,6 +8,7 @@ namespace HotelPMS.Models
         public int Number { get; set; }
         public double Area { get; set; }
         public int? Beds { get; set; }
+        public int Price { get; set; }
         public string Type { get; set; }
         public string? Image { get; set; }
         public string Border { get; set; }

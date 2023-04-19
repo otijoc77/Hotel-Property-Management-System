@@ -2,7 +2,9 @@
 import '../../../custom.css';
 
 export function CountryForm() {
-    async function handleClick() {
+    async function handleClick(e) {
+        e.preventDefault();
+        window.location.reload(false);
         await fetch('api/countries', {
             method: 'POST',
             mode: 'cors',
@@ -19,8 +21,7 @@ export function CountryForm() {
             })
             .catch(error => {
                 console.log(error)
-            })
-
+            });
     }
 
     const [name, setName] = useState("");
@@ -33,7 +34,7 @@ export function CountryForm() {
                     <label>Name:</label>
                     <input type="text" name="name" className="form-control w-50" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
                 </div>
-                <button type="submit" className="btn btn-dark" disabled={name == ""} onClick={handleClick}>Add</button>
+                <button type="button" className="btn btn-dark" disabled={name == ""} onClick={(e) => handleClick(e)}>Add</button>
             </form>
         </div>
     );

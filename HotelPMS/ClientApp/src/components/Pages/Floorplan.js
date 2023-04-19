@@ -101,7 +101,7 @@ class Floorplan extends Component {
                 <div className="form-group">
                     <label>Floor:</label>
                     <Row className="m-1">
-                        <select name="floor" className="form-select w-50" value={this.state.currentFloorIndex} onChange={(e) => { this.setState({ currentFloorIndex: e.target.value, currentFloorId: this.state.floors[e.target.value].id }) }}>
+                        <select name="floor" className="form-select w-50" value={this.state.currentFloorIndex} onChange={(e) => {this.setState({ currentFloorIndex: e.target.value, currentFloorId: this.state.floors[e.target.value].id })}}>
                             <option defaultValue="-1" >Select floor</option>
                             {this.state.floors.map((floor, index) => <option value={index} key={floor.id}>{floor.number}</option>)}
                         </select>
@@ -121,6 +121,7 @@ class Floorplan extends Component {
                                 height={1000}
                                 href={this.state.floors[this.state.currentFloorIndex].floorplan}
                             />
+                            {this.state.floors[this.state.currentFloorIndex].rooms.map((room) => <polygon key={room.id} points={room.border} style={{ fill: "lime", opacity: "50%" }} />)}
                             {/*<polygon
                                 points={border}
                             />*/}

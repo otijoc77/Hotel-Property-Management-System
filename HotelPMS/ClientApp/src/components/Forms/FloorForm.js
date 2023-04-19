@@ -10,7 +10,9 @@ function FloorFormFunction(hotelId) {
     const [area, setArea] = useState(0);
     const [image, setImage] = useState("");
 
-    async function handleClick() {
+    async function handleClick(e) {
+        e.preventDefault();
+        window.location.href = link_back;
         if (number != 0 || image != "") {
             await fetch('api/floors', {
                 method: 'POST',
@@ -61,7 +63,7 @@ function FloorFormFunction(hotelId) {
                         <small id="imageHelp" className="form-text text-muted">Floorplan image url.</small>
                     </div>
                 </div>
-                <button type="submit" className="btn btn-dark" onClick={handleClick}>Register</button>
+                <button type="button" className="btn btn-dark" onClick={(e) => handleClick(e)}>Register</button>
             </form>
         </Layout>
     );

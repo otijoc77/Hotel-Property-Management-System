@@ -3,8 +3,10 @@ import '../../custom.css';
 import { Header } from '../Navigation/Header';
 
 export function RegisterForm() {
-    async function handleClick() {
+    async function handleClick(e) {
+        e.preventDefault();
         var accountId = 0;
+        //window.location.href = '/login';
         if (name != "" && surname != "" && (email != "" || number != "" || username != "" && password != "")) {
             await fetch('api/accounts', {
                 method: 'POST',
@@ -22,7 +24,8 @@ export function RegisterForm() {
                     console.log(response);
                     response.json()
                         .then(data => {
-                            accountId = data.id
+                            accountId = data.id;
+                            console.log(accountId)
                         })
                 })
                 .catch(error => {
@@ -41,11 +44,19 @@ export function RegisterForm() {
                     gender: gender,
                     email: email,
                     phoneNumber: number,
-                    accountId: accountId,
+                    accountId: accountId.toString(),
                 })
             })
                 .then(response => {
-                    console.log(response)
+                    console.log(response);
+                    console.log(JSON.stringify({
+                        name: name,
+                        surname: surname,
+                        gender: gender,
+                        email: email,
+                        phoneNumber: number,
+                        accountId: accountId.toString(),
+                    }))
                 })
                 .catch(error => {
                     console.log(error)
@@ -100,8 +111,8 @@ export function RegisterForm() {
                         <label>Phone number:</label>
                         <input type="text" name="number" className="form-control w-50" placeholder="Phone number" value={number} onChange={(e) => setPhoneNum(e.target.value)} />
                     </div>
-                    <button type="submit" className="btn btn-dark" onClick={handleClick}>Register</button>
                 </form>
+                    <button type="button" className="btn btn-dark" onClick={(e) => handleClick(e)}>Register</button>
             </div>
         </>
     );

@@ -27,6 +27,7 @@ const DrawCanvas = ({ initialData, onChange, image }, ref) => {
             </button>
             <Canvas
                 ref={(canvas) => (ref = canvas)}
+                imgSrc={image}
                 color='#b30000'
                 canUndo={true}
                 height={1000}

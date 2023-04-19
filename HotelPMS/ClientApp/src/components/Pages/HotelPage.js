@@ -1,6 +1,7 @@
 ﻿import React, { Component } from 'react';
 import { useParams } from "react-router-dom";
 import { Col, Row, Container } from 'reactstrap';
+import Rating from '@mui/material/Rating';
 import '../../custom.css';
 import { Layout } from '../Layout';
 import { ReviewTable } from '../Lists/ReviewTable';
@@ -52,7 +53,7 @@ class HotelPage extends Component {
                 <Container>
                     <Row>
                         <h1 id="name" >{this.state.hotel.name}</h1>
-                        {/*rating here*/}
+                        <Rating name="rating" value={this.state.hotel.rating} size="large" readOnly />
                     </Row>
                     <Row>
                         <Col>
@@ -77,17 +78,18 @@ class HotelPage extends Component {
                                 </Row>
                                 <Row>
                                     <button className="btn btn-dark w-200p margin-b-5 margin-2" onClick={e => window.location.href = this.state.link_floorplan} >Floorplan</button>
+                                    <button className="btn btn-dark w-200p margin-b-5 margin-2" >Make Reservation</button>
                                 </Row>
                             </div>
                         </Col>
                         <Col>
-                            <div className='card'>
+                            <div className="card">
                                 {this.state.hotel.image != "" && <img src={this.state.hotel.image} className="img-fluid" alt="Hotel" />}
                             </div>
                         </Col>
                     </Row>
                     <Row className="p-3">
-                        <ReviewTable hotelReviews={this.state.hotel.reviews} />
+                        {this.state.loaded && < ReviewTable hotelReviews={this.state.hotel.reviews}/>}
                     </Row>
                 </Container>
             </Layout>
