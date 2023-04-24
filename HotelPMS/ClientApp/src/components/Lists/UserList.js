@@ -6,13 +6,42 @@ import { Layout } from '../Layout';
 export class UserList extends Component {
     constructor(props) {
         super(props);
-        this.state = { users: [], loading: true };
+        this.state = {
+            users: [],
+            currentUserId: 0,
+            loading: true
+        };
     }
 
     async populateUserData() {
         const response = await fetch('api/users');
         const data = await response.json();
         this.setState({ users: data, loading: false });
+    }
+
+    async updateUserLevel(props) {
+        props.e.preventDefault();
+        window.location.reload(false);
+        console.log(props);
+        await fetch('api/users/' + this.state.currentUserId, {
+            method: 'PUT',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                account: {
+                    level: props.level,
+                },
+            })
+        })
+            .then(response => {
+                console.log(response)
+            })
+            .catch(error => {
+                console.log(error)
+            });
     }
 
     componentDidMount() {
@@ -32,13 +61,13 @@ export class UserList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map(user =>
-                            <tr key={user.id} onClick={() => this.handleRowClick(user.Id)}>
+                        {users.map(user => user.account != null &&
+                            <tr key={user.id}>
                                 <td>{user.name} {user.surname}</td>
                                 <td>{user.email}</td>
                                 <td>{user.phoneNumber}</td>
                                 <td>
-                                    <select name="floor" className="form-select w-50" value={this.state.currentFloorIndex} onChange={(e) => { this.setState({ currentFloorIndex: e.target.value, currentFloorId: this.state.floors[e.target.value].id }) }}>
+                                    <select name="level" className="form-select w-50" value={user.account.level} onChange={(e) => { this.setState({ currentUserId: user.id }); this.updateUserLevel(e, user.account.level) }} >
                                         {AccountLevels.map(level => <option value={level.value} key={level.value}>{level.label}</option>)}
                                     </select>
                                 </td>

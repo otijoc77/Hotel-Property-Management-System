@@ -7,10 +7,14 @@ namespace HotelPMS.Services
     public class CompanyService : ICompanyService
     {
         private readonly IRepositoryWrapper _repository;
+        private readonly IHotelService _hotelService;
+        private readonly IUserService _userService;
 
-        public CompanyService(IRepositoryWrapper repository)
+        public CompanyService(IRepositoryWrapper repository, IHotelService hotelService, IUserService userService)
         {
             _repository = repository;
+            _hotelService = hotelService;
+            _userService = userService;
         }
 
         public Task<Company> CreateAsync(Company company)
@@ -55,7 +59,7 @@ namespace HotelPMS.Services
             List<Hotel> hotels = await _repository.Hotel.GetByConditionAsync(hotel => hotel.CompanyId == id);
             foreach (Hotel hotel in hotels)
             {
-                await _repository.Hotel.DeleteAsync(hotel.Id);
+                await _hotelService.DeleteAsync(hotel.Id);
             }
             return hotels;
         }
@@ -65,7 +69,7 @@ namespace HotelPMS.Services
             List<User> employees = await _repository.User.GetByConditionAsync(user => user.CompanyId == id);
             foreach (User user in employees)
             {
-                await _repository.User.DeleteAsync(user.Id);
+                await _userService.DeleteAsync(user.Id);
             }
             return employees;
         }

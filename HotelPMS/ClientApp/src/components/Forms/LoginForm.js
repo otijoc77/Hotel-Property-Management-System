@@ -40,7 +40,7 @@ export function LoginForm() {
                     <label className="d-block center w-50">Username:</label>
                     <input type="text" name="username" className="form-control w-50 center" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
                 </div>
-                <div class="form-group center">
+                <div className="form-group center">
                     <label className="d-block center w-50">Password:</label>
                     <input type="password" name="password" className="form-control w-50 center" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 </div>

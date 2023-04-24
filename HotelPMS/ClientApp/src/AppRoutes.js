@@ -13,6 +13,7 @@ import FloorForm from "./components/Forms/FloorForm";
 import RoomForm from "./components/Forms/RoomForm";
 import { UserList } from "./components/Lists/UserList";
 import { HotelList } from "./components/Lists/HotelList";
+import { ReservationForm } from "./components/Forms/ReservationForm";
 
 const AppRoutes = [
     {
@@ -60,6 +61,10 @@ const AppRoutes = [
         element: <Floorplan />
     },
     {
+        path: '/hotel/:hotelId/floorplan/:id',
+        element: <Floorplan />
+    },
+    {
         path: '/hotel/:hotelId/floor-register',
         element: <FloorForm />
     },
@@ -82,6 +87,10 @@ const AppRoutes = [
     {
         path: '/register',
         element: <RegisterForm />
+    },
+    {
+        path: '/reservation',
+        element: <ReservationForm />
     },
 ];
 

@@ -7,6 +7,7 @@ export function CompanyForm() {
 
     const [code, setCode] = useState("");
     const [name, setName] = useState("");
+    const [logo, setLogo] = useState("");
     const [description, setDescription] = useState("");
 
     async function handleClick(e) {

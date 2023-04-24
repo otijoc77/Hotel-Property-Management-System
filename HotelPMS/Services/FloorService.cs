@@ -18,14 +18,24 @@ namespace HotelPMS.Services
             return _repository.Floor.AddAsync(floor);
         }
 
-        public Task<Floor> DeleteAsync(int id)
+        public async Task<Floor> DeleteAsync(int id)
         {
-            return _repository.Floor.DeleteAsync(id);
+            List<Room> rooms = await _repository.Room.GetByConditionAsync(room => room.FloorId == id);
+            foreach (Room item in rooms)
+            {
+                await _repository.Room.DeleteAsync(item.Id);
+            }
+            return await _repository.Floor.DeleteAsync(id);
         }
 
-        public Task<List<Floor>> GetAllAsync()
+        public async Task<List<Floor>> GetAllAsync()
         {
-            return _repository.Floor.GetAllAsync();
+            List<Floor> floors = await _repository.Floor.GetAllAsync();
+            foreach (Floor item in floors)
+            {
+                item.Rooms = await _repository.Room.GetByConditionAsync(room => room.FloorId == item.Id);
+            }
+            return floors;
         }
 
         public async Task<List<Floor>> GetByConditionAsync(Expression<Func<Floor, bool>> expression)

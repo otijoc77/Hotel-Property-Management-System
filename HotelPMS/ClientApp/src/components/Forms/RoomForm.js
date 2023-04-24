@@ -84,6 +84,10 @@ function RoomFormFunction(props) {
         console.log(pointsJson);
     };
 
+    const viewRoom = (room) => {
+        
+    };
+
     return (
         <Layout>
             <div className="w-100 d-table">
@@ -153,6 +157,7 @@ function RoomFormFunction(props) {
                     />
                     <polygon
                         points={border}
+                        onClick={viewRoom}
                     />
                 </svg>
             </div>

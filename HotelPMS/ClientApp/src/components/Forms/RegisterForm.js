@@ -5,63 +5,65 @@ import { Header } from '../Navigation/Header';
 export function RegisterForm() {
     async function handleClick(e) {
         e.preventDefault();
-        var accountId = 0;
-        //window.location.href = '/login';
-        if (name != "" && surname != "" && (email != "" || number != "" || username != "" && password != "")) {
-            await fetch('api/accounts', {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                })
-            })
-                .then(response => {
-                    console.log(response);
-                    response.json()
-                        .then(data => {
-                            accountId = data.id;
-                            console.log(accountId)
-                        })
-                })
-                .catch(error => {
-                    console.log(error)
-                });
-            await fetch('api/users', {
-                method: 'POST',
-                mode: 'cors',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: name,
-                    surname: surname,
-                    gender: gender,
-                    email: email,
-                    phoneNumber: number,
-                    accountId: accountId.toString(),
-                })
-            })
-                .then(response => {
-                    console.log(response);
-                    console.log(JSON.stringify({
-                        name: name,
-                        surname: surname,
-                        gender: gender,
-                        email: email,
-                        phoneNumber: number,
-                        accountId: accountId.toString(),
-                    }))
-                })
-                .catch(error => {
-                    console.log(error)
-                });
+        if (name != "" && surname != "" && (email != "" || number != "") || username != "" && password != "") {
+            await postAccount();
+            console.log("3", accountId);
+            await postUser();
         };
+        //window.location.href = '/login';
+    }
+
+    async function postAccount() {
+        await fetch('api/accounts', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+            })
+        })
+            .then(response => {
+                response.json()
+                    .then(data => {
+                        setAccountId(data.id);
+                        console.log("1", accountId);
+                        console.log("1 data", data.id);
+                    });
+                console.log("2", accountId);
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+
+    async function postUser() {
+        fetch('api/users', {
+            method: 'POST',
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: name,
+                surname: surname,
+                gender: gender,
+                email: email,
+                phoneNumber: number,
+                accountId: accountId.toString(),
+            })
+        })
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            });
     }
 
     const [username, setUsername] = useState("");
@@ -71,6 +73,7 @@ export function RegisterForm() {
     const [gender, setGender] = useState("");
     const [email, setEmail] = useState("");
     const [number, setPhoneNum] = useState("");
+    const [accountId, setAccountId] = useState(0);
 
     return (
         <>

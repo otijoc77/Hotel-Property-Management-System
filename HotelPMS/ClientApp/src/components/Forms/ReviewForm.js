@@ -1,11 +1,13 @@
 ﻿import React, { useState, Component } from 'react';
 import { useParams } from "react-router-dom";
+import { Row, Col } from 'reactstrap';
 import Rating from '@mui/material/Rating';
 import '../../custom.css';
 
 export function ReviewFormFunction(hotelId) {
     const [rating, setRating] = useState(0);
     const [text, setText] = useState("");
+    const [anonymous, setAnonimity] = useState(false);
 
     async function handleClick(e) {
         e.preventDefault();
@@ -20,6 +22,7 @@ export function ReviewFormFunction(hotelId) {
             body: JSON.stringify({
                 rating: rating,
                 text: text,
+                anonymous: anonymous,
                 hotelId: hotelId.hotelId,
                 userId: "0",
             })
@@ -35,10 +38,20 @@ export function ReviewFormFunction(hotelId) {
     return (
         <div className="card w-75 p-2">
             <form>
-                <div className="form-group">
-                    <label>Rating:&nbsp;</label>
-                    <Rating className="align-middle" name="simple-controlled" value={rating} onChange={(e) => setRating(e.target.value)} />
-                </div>
+                <Row>
+                    <Col>
+                        <div className="form-group">
+                            <label>Rating:&nbsp;</label>
+                            <Rating className="align-middle" name="simple-controlled" value={rating} onChange={(e) => setRating(e.target.value)} />
+                        </div>
+                    </Col>
+                    <Col>
+                        <div className="form-group">
+                            <input type="checkbox" className="form-check-input" id="check" value={anonymous} onChange={(e) => setAnonimity(!anonymous)} />
+                            <label>Anonymous</label>
+                        </div>
+                    </Col>
+                </Row>
                 <div className="form-group">
                     <label>Comment:</label>
                     <textarea name="text" className="form-control w-75" placeholder="Comment" value={text} onChange={(e) => setText(e.target.value)} />
