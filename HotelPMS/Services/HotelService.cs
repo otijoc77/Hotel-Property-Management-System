@@ -23,9 +23,14 @@ namespace HotelPMS.Services
             return _repository.Hotel.DeleteAsync(id);
         }
 
-        public Task<List<Hotel>> GetAllAsync()
+        public async Task<List<Hotel>> GetAllAsync()
         {
-            return _repository.Hotel.GetAllAsync();
+            List<Hotel> hotels = await _repository.Hotel.GetAllAsync();
+            foreach (var hotel in hotels)
+            {
+                hotel.City = await _repository.City.GetAsync(hotel.CityId);
+            }
+            return hotels;
         }
 
         public Task<List<Hotel>> GetByConditionAsync(Expression<Func<Hotel, bool>> expression)
@@ -36,14 +41,20 @@ namespace HotelPMS.Services
         public async Task<Hotel> GetByIdAsync(int id)
         {
             Hotel hotel = await _repository.Hotel.GetAsync(id);
-            hotel.Floors = await _repository.Floor.GetByConditionAsync(floor => floor.HotelId == hotel.Id);
-            hotel.Reviews = await _repository.Review.GetByConditionAsync(review => review.HotelId == hotel.Id);
+            hotel.City = await _repository.City.GetAsync(hotel.CityId);
+            await FillLists(hotel);
             return hotel;
         }
 
         public Task<Hotel> UpdateAsync(Hotel item)
         {
             return _repository.Hotel.UpdateAsync(item);
+        }
+
+        private async Task FillLists(Hotel hotel)
+        {
+            hotel.Floors = await _repository.Floor.GetByConditionAsync(floor => floor.HotelId == hotel.Id);
+            hotel.Reviews = await _repository.Review.GetByConditionAsync(review => review.HotelId == hotel.Id);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿import React, { Component } from 'react';
 import '../../custom.css';
+import { Col, Row } from 'reactstrap';
 import { Layout } from '../Layout';
 
 export class CompanyList extends Component {
@@ -28,25 +29,22 @@ export class CompanyList extends Component {
 
     static renderCompaniesTable(companies) {
         return (
-            <div className='card'>
-                <table className='table table-striped mb-0' aria-labelledby="tabelLabel">
-                    <thead className='table-head'>
-                        <tr>
-                            <th></th>
-                            <th>Name</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {companies.map(company =>
-                            <tr key={company.id} onClick={()=>this.handleRowClick(company.Id)}>
-                                <td>{company.logo}</td>
-                                <td><a href={"/company/" + company.id} >{company.name}</a></td>
-                                <td>{company.description}</td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+            <div>
+                {companies.map(company =>
+                    <div className="card p-2 margin-b-20" key={company.id} onClick={() => this.handleRowClick(company.Id)}>
+                        <Row>
+                            <Col>
+                                {company.logo}
+                            </Col>
+                            <Col>
+                                <h2><a href={"/company/" + company.id} >{company.name}</a></h2>
+                            </Col>
+                            <Col>
+                                <p>{company.description}</p>
+                            </Col>
+                        </Row>
+                    </div>
+                )}
             </div>
         );
     }
@@ -61,7 +59,7 @@ export class CompanyList extends Component {
         return (
             <Layout>
                 <h1 id="tabelLabel" >Companies</h1>
-                <div className="w-100 d-table">
+                <div className="w-100 d-table margin-b-5">
                     <p className="d-table-cell">Registered companies:</p>
                     <div className="d-table-cell text-r">
                         <button className="btn btn-dark" onClick={this.handleOnClick}>Register new company</button>

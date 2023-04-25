@@ -1,5 +1,4 @@
 ﻿import React, { useState, Component } from 'react';
-import { useParams } from "react-router-dom";
 import { Row, Col } from 'reactstrap';
 import '../../custom.css';
 import AmenityRoomTypes from '../../enums/AmenityRoomTypes';
@@ -7,6 +6,7 @@ import BedRoomTypes from '../../enums/BedRoomTypes';
 import LayoutRoomTypes from '../../enums/LayoutRoomTypes';
 import OccupancyRoomTypes from '../../enums/OccupancyRoomTypes';
 import SuiteRoomTypes from '../../enums/SuiteRoomTypes';
+import withParams from '../../hooks/withParameters';
 import DrawCanvas from '../Functions/DrawCanvas';
 import { Layout } from '../Layout';
 
@@ -165,10 +165,6 @@ function RoomFormFunction(props) {
     );
 }
 
-function withParams(Component) {
-    return props => <Component {...props} params={useParams()} />;
-}
-
 class RoomForm extends Component {
     constructor(props) {
         super(props);
@@ -198,7 +194,7 @@ class RoomForm extends Component {
         return (
             <>
                 {this.state.loaded &&
-                    < RoomFormFunction
+                    <RoomFormFunction
                         hotelId={this.state.hotelId}
                         hotelType={this.state.hotelType}
                         floorId={this.state.floorId}

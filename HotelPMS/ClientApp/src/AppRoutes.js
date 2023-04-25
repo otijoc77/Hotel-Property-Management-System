@@ -14,6 +14,8 @@ import RoomForm from "./components/Forms/RoomForm";
 import { UserList } from "./components/Lists/UserList";
 import { HotelList } from "./components/Lists/HotelList";
 import { ReservationForm } from "./components/Forms/ReservationForm";
+import ReservationPage from "./components/Pages/ReservationPage";
+import { ReservationList } from "./components/Lists/ReservationList";
 
 const AppRoutes = [
     {
@@ -71,6 +73,14 @@ const AppRoutes = [
     {
         path: '/hotel/:hotelId/floor/:floorId',
         element: <RoomForm />
+    },
+    {
+        path: '/reservation-list',
+        element: <ReservationList />
+    },
+    {
+        path: '/reservation/:id',
+        element: <ReservationPage />
     },
     {
         path: '/location-register',

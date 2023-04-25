@@ -1,19 +1,16 @@
 ﻿import React, { Component } from 'react';
-import { useParams } from "react-router-dom";
-import { Col, Row, Container } from 'reactstrap';
+import { Row, Container } from 'reactstrap';
 import { HotelTable } from '../Lists/HotelTable';
 import '../../custom.css';
 import { Layout } from '../Layout';
-
-function withParams(Component) {
-    return props => <Component {...props} params={useParams()} />;
-}
+import withParams from '../../hooks/withParameters';
+import { UserTable } from '../Lists/UserTable';
 
 class CompanyPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            company: { id: 0, code: "", name: "", description: "", hotels: [] },
+            company: { id: 0, code: "", name: "", description: "", hotels: [], employees: [] },
             id: this.props.params.id,
             loaded: false,
             link_back: '/company-list',
@@ -68,7 +65,15 @@ class CompanyPage extends Component {
                     <Row>
                         <button className="btn btn-dark w-200p margin-b-5 margin-2" onClick={e => window.location.href = this.state.link_hotel} >Register new hotel</button>
                     </Row>
-                    {this.state.loaded && <HotelTable companyHotels={this.state.company.hotels}/>}
+                    {this.state.loaded &&
+                        <>
+                        <HotelTable companyHotels={this.state.company.hotels} />
+                        {this.state.company.employees.length > 0 ?
+                            <UserTable users={this.state.company.employees} admin={false} /> :
+                            <p><em>No registered employees.</em></p>
+                        }
+                        </>
+                    }
                 </Container>
             </Layout>
         )

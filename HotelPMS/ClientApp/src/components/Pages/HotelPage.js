@@ -1,14 +1,10 @@
 ﻿import React, { Component } from 'react';
-import { useParams } from "react-router-dom";
 import { Col, Row, Container } from 'reactstrap';
 import Rating from '@mui/material/Rating';
 import '../../custom.css';
 import { Layout } from '../Layout';
 import { ReviewTable } from '../Lists/ReviewTable';
-
-function withParams(Component) {
-    return props => <Component {...props} params={useParams()} />;
-}
+import withParams from '../../hooks/withParameters';
 
 class HotelPage extends Component {
     constructor(props) {

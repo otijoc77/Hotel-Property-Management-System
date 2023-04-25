@@ -1,6 +1,6 @@
 ﻿import React, { useState } from 'react';
 import '../../custom.css';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Row, Col } from 'reactstrap';
 
@@ -10,7 +10,7 @@ export function ReservationForm(props) {
     //TODO: search for userId: 0 and change to current user id
     async function handleClick(e) {
         e.preventDefault();
-        window.location.reload(false);
+        window.location.href = "/reservation-list";
         await fetch('api/reservations', {
             method: 'POST',
             mode: 'cors',
@@ -24,6 +24,7 @@ export function ReservationForm(props) {
                 userId: props.userId,
                 hotelId: props.hotelId,
                 roomId: props.roomId,
+                checkedIn: false,
             })
         })
             .then(response => {
@@ -36,7 +37,7 @@ export function ReservationForm(props) {
 
     return (
         <>
-            <h1 id="header">Make reservation</h1>
+            <h2 id="header">Make reservation</h2>
             <form>
                 <Row>
                     <Col>
@@ -48,7 +49,7 @@ export function ReservationForm(props) {
                     <Col>
                         <div className="form-group">
                             <label>To:</label><br />
-                            <DatePicker value={end} onChange={(e) => setEnd(e)} disablePast />
+                            <DatePicker value={end} onChange={(e) => setEnd(e)} minDate={start.add(1, 'day')} disablePast />
                         </div>
                     </Col>
                 </Row>

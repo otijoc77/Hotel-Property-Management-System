@@ -1,10 +1,10 @@
 ﻿import React, { useState, useEffect, Component } from 'react';
-import { useParams } from "react-router-dom";
 import Rating from '@mui/material/Rating';
 import '../../custom.css';
 import HotelTypes from '../../enums/HotelTypes';
 import RoomClassifications from '../../enums/RoomClassifications';
 import { Layout } from '../Layout';
+import withParams from '../../hooks/withParameters';
 
 function HotelFormFunction(companyId) {
     const link_back = "/company/" + companyId.companyId;
@@ -133,10 +133,6 @@ function HotelFormFunction(companyId) {
             </form>
         </Layout>
     );
-}
-
-function withParams(Component) {
-    return props => <Component {...props} params={useParams()} />;
 }
 
 class HotelForm extends Component {

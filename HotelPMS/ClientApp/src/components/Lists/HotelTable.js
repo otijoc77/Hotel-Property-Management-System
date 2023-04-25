@@ -1,4 +1,6 @@
 ﻿import React, { Component } from 'react';
+import { Col, Row } from 'reactstrap';
+import Rating from '@mui/material/Rating';
 import '../../custom.css';
 
 export class HotelTable extends Component {
@@ -8,39 +10,46 @@ export class HotelTable extends Component {
     }
 
     async populateHotelData() {
-        if (this.props.companyHotels == null) {
+        if (this.props.passedHotels == null) {
             const response = await fetch('api/hotels');
             const data = await response.json();
             this.setState({ hotels: data, loading: false });
         }
         else {
-            this.setState({ hotels: this.props.companyHotels, loading: false });
+            this.setState({ hotels: this.props.passedHotels, loading: false });
         }
     }
 
     componentDidMount() {
         this.populateHotelData();
     }
-
+    //TODO: map type to frontend types and search
     static renderHotelsTable(hotels) {
         return (
-            <div className='card'>
-                <table className='table table-striped mb-0' aria-labelledby="tabelLabel">
-                    <thead className='table-head'>
-                        <tr>
-                            <th>Id</th>
-                            <th>Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {hotels.map(hotel =>
-                            <tr key={hotel.id}>
-                                <td>{hotel.id}</td>
-                                <td><a href={"/hotel/" + hotel.id} >{hotel.name}</a></td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
+            <div className="w-75">
+                {hotels.map(hotel =>
+                    <div className="card p-2 margin-b-20" key={hotel.id}>
+                        <Row className="margin-b-0">
+                            <Col>
+                                <img
+                                    src={hotel.image}
+                                    width={100}
+                                />
+                            </Col>
+                            <Col>
+                                <h4><a href={"/hotel/" + hotel.id} >{hotel.name}</a></h4>
+                                <Rating value={hotel.rating} size="small" readOnly />
+                            </Col>
+                            <Col>
+                                {/*<p>{hotel.city.name}</p>*/}
+                                <p>{hotel.address}</p>
+                            </Col>
+                            <Col>
+                                <p>{hotel.type}</p>
+                            </Col>
+                        </Row>
+                    </div>
+                )}
             </div>
         );
     }

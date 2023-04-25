@@ -1,7 +1,6 @@
 ﻿import React, { useState, Component } from 'react';
-import { useParams } from "react-router-dom";
-import { Col, Row } from 'reactstrap';
 import '../../custom.css';
+import withParams from '../../hooks/withParameters';
 import { Layout } from '../Layout';
 
 function FloorFormFunction(hotelId) {
@@ -39,14 +38,12 @@ function FloorFormFunction(hotelId) {
 
     return (
         <Layout>
-            <Row>
-                <Col>
-                    <h1 id="header" >Register floor</h1>
-                </Col>
-                <Col>
+            <div className="w-100 d-table">
+                <h1 id="header" className="d-table-cell">Register floor</h1>
+                <div className="d-table-cell text-r">
                     <button className="btn btn-dark margin-2" onClick={e => window.location.href = link_back} >Back</button>
-                </Col>
-            </Row>
+                </div>
+            </div>
             <form>
                 <div className="row w-100">
                     <div className="form-group">
@@ -67,10 +64,6 @@ function FloorFormFunction(hotelId) {
             </form>
         </Layout>
     );
-}
-
-function withParams(Component) {
-    return props => <Component {...props} params={useParams()} />;
 }
 
 class FloorForm extends Component {

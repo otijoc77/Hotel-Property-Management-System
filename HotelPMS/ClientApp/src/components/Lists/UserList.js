@@ -2,6 +2,7 @@
 import '../../custom.css';
 import AccountLevels from '../../enums/AccountLevels';
 import { Layout } from '../Layout';
+import { UserTable } from './UserTable';
 
 export class UserList extends Component {
     constructor(props) {
@@ -50,32 +51,7 @@ export class UserList extends Component {
 
     static renderUsersTable(users) {
         return (
-            <div className='card'>
-                <table className='table table-striped mb-0' aria-labelledby="tabelLabel">
-                    <thead className='table-head'>
-                        <tr>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Phone Number</th>
-                            <th>Level</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {users.map(user => user.account != null &&
-                            <tr key={user.id}>
-                                <td>{user.name} {user.surname}</td>
-                                <td>{user.email}</td>
-                                <td>{user.phoneNumber}</td>
-                                <td>
-                                    <select name="level" className="form-select w-50" value={user.account.level} onChange={(e) => { this.setState({ currentUserId: user.id }); this.updateUserLevel(e, user.account.level) }} >
-                                        {AccountLevels.map(level => <option value={level.value} key={level.value}>{level.label}</option>)}
-                                    </select>
-                                </td>
-                            </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+            <UserTable users={users} admin={true}/>
         );
     }
 

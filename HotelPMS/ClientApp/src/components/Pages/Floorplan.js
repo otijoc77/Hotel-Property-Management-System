@@ -1,12 +1,12 @@
 ﻿import React, { Component, useEffect, useRef, useState } from 'react';
-import { Row } from 'reactstrap';
+import { Row, Col } from 'reactstrap';
 import '../../custom.css';
 import { Layout } from '../Layout';
 import { HubConnectionBuilder } from '@microsoft/signalr';
-import { useParams } from 'react-router-dom';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { ReservationForm } from '../Forms/ReservationForm';
+import withParams from '../../hooks/withParameters';
 
 function FloorplanFunction(props) {
     //const [style, setStyle] = useState({ fill: "lime", opacity: "50%" });
@@ -17,22 +17,11 @@ function FloorplanFunction(props) {
         floors: [],
         currentFloorIndex: -1,
         currentFloorId: 0,
-        currentRoomId: 0,
+        currentRoom: {},
         hotelId: props.hotelId,
         link_add: '/hotel/' + props.hotelId + '/floor-register',
         link_room: '/hotel/' + props.hotelId + '/floor/',
     });
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: 400,
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-    };
 
     const Requests = () => {
         const [connection, setConnection] = useState(null);
@@ -94,14 +83,39 @@ function FloorplanFunction(props) {
 
     const Reservation = () => {
         const handleClose = () => setShow(false);
-
+        const style = {
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: "25%",
+            bgcolor: 'background.paper',
+            border: '2px solid #b30000',
+            boxShadow: 24,
+            p: 4,
+        };
+        //TODO: fix the user id
         return (
             <Modal open={show} onClose={handleClose}>
                 <Box sx={style}>
+                    <h1>{state.currentRoom.number}</h1>
+                    <img
+                        src={state.currentRoom.image}
+                        width="100%"
+                        className="margin-b-5"
+                    />
+                    <Row>
+                        <Col>
+                            <p>Beds: <strong>{state.currentRoom.beds}</strong></p>
+                        </Col>
+                        <Col>
+                            <p>Type: <strong>{state.currentRoom.type}</strong></p>
+                        </Col>
+                    </Row>
                     <ReservationForm
                         userId={0}
                         hotelId={state.hotelId}
-                        roomId={state.currentRoomId}
+                        roomId={state.currentRoom.id}
                     />
                 </Box>
             </Modal>
@@ -109,7 +123,7 @@ function FloorplanFunction(props) {
     };
 
     function roomClick(room) {
-        setState({ ...state, currentRoomId: room.id });
+        setState({ ...state, currentRoom: room });
         setShow(true);
     };
 
@@ -164,10 +178,6 @@ function FloorplanFunction(props) {
         </>
     );
 };
-
-function withParams(Component) {
-    return props => <Component {...props} params={useParams()} />;
-}
 
 class Floorplan extends Component {
     constructor(props) {

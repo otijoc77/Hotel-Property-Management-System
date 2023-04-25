@@ -10,6 +10,21 @@ export class NavMenu extends Component {
                 <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
                 </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/reservation-list">Reservation List</NavLink>
+                </NavItem>
+                <UncontrolledAccordion flush stayOpen defaultOpen={["3"]}>
+                    <AccordionItem>
+                        <AccordionHeader targetId="3">
+                            <b>Locations</b>
+                        </AccordionHeader>
+                        <AccordionBody accordionId="3">
+                            <NavItem>
+                                <NavLink tag={Link} className="text-dark" to="/location-register">Add Locations</NavLink>
+                            </NavItem>
+                        </AccordionBody>
+                    </AccordionItem>
+                </UncontrolledAccordion>
                 <UncontrolledAccordion flush stayOpen defaultOpen={["1"]}>
                     <AccordionItem>
                         <AccordionHeader targetId="1">
@@ -33,18 +48,6 @@ export class NavMenu extends Component {
                         <AccordionBody accordionId="2">
                             <NavItem>
                                 <NavLink tag={Link} className="text-dark" to="/hotel-list">Hotel List</NavLink>
-                            </NavItem>
-                        </AccordionBody>
-                    </AccordionItem>
-                </UncontrolledAccordion>
-                <UncontrolledAccordion flush stayOpen defaultOpen={["3"]}>
-                    <AccordionItem>
-                        <AccordionHeader targetId="3">
-                            <b>Locations</b>
-                        </AccordionHeader>
-                        <AccordionBody accordionId="3">
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/location-register">Add locations</NavLink>
                             </NavItem>
                         </AccordionBody>
                     </AccordionItem>

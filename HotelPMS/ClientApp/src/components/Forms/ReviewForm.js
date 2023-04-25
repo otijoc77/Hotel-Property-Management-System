@@ -1,8 +1,8 @@
 ﻿import React, { useState, Component } from 'react';
-import { useParams } from "react-router-dom";
 import { Row, Col } from 'reactstrap';
 import Rating from '@mui/material/Rating';
 import '../../custom.css';
+import withParams from '../../hooks/withParameters';
 
 export function ReviewFormFunction(hotelId) {
     const [rating, setRating] = useState(0);
@@ -60,10 +60,6 @@ export function ReviewFormFunction(hotelId) {
             </form>
         </div>
     );
-}
-
-function withParams(Component) {
-    return props => <Component {...props} params={useParams()} />;
 }
 
 class ReviewForm extends Component {

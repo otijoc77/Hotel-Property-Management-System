@@ -36,19 +36,33 @@ namespace HotelPMS.Services
             return _repository.Reservation.GetAllAsync();
         }
 
-        public Task<List<Reservation>> GetByConditionAsync(Expression<Func<Reservation, bool>> expression)
+        public async Task<List<Reservation>> GetByConditionAsync(Expression<Func<Reservation, bool>> expression)
         {
-            return _repository.Reservation.GetByConditionAsync(expression);
+            List<Reservation> list = await _repository.Reservation.GetByConditionAsync(expression);
+            foreach (var item in list)
+            {
+                await FillFields(item);
+            }
+            return list;
         }
 
-        public Task<Reservation> GetByIdAsync(int id)
+        public async Task<Reservation> GetByIdAsync(int id)
         {
-            return _repository.Reservation.GetAsync(id);
+            Reservation item = await _repository.Reservation.GetAsync(id);
+            await FillFields(item);
+            return item;
         }
 
         public Task<Reservation> UpdateAsync(Reservation item)
         {
             return _repository.Reservation.UpdateAsync(item);
+        }
+
+        private async Task FillFields(Reservation item)
+        {
+            item.User = await _repository.User.GetAsync(item.UserId);
+            item.Hotel = await _repository.Hotel.GetAsync(item.HotelId);
+            item.Room = await _repository.Room.GetAsync(item.RoomId);
         }
     }
 }
