@@ -35,6 +35,12 @@ namespace HotelPMS.Controllers
             return await _reservationService.GetByConditionAsync(reservation => reservation.UserId.Equals(id));
         }
 
+        [HttpGet("room/{id}")]
+        public async Task<ActionResult<IEnumerable<Reservation>>> GetReservationsByRoom(int id)
+        {
+            return await _reservationService.GetByConditionAsync(reservation => reservation.RoomId.Equals(id));
+        }
+
         [HttpPost]
         public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
         {

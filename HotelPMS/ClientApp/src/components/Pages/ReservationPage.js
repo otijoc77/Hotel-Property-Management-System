@@ -32,7 +32,6 @@ class ReservationPage extends Component {
             .then(response => response.json())
             .then(data => {
                 this.setState({ reservation: data, loaded: true });
-                console.log(data)
             })
     }
 
@@ -56,7 +55,7 @@ class ReservationPage extends Component {
                 checkedIn: true
             }
         }));
-        fetch('api/reservations/' + this.state.id, {
+        fetch('api/reservations/', {
             method: 'PUT',
             mode: 'cors',
             headers: {
@@ -80,8 +79,6 @@ class ReservationPage extends Component {
                 console.log(error)
             });
     }
-
-    /**/
 
     componentDidMount() {
         this.getReservation();

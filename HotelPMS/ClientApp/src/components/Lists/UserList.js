@@ -1,6 +1,5 @@
 ﻿import React, { Component } from 'react';
 import '../../custom.css';
-import AccountLevels from '../../enums/AccountLevels';
 import { Layout } from '../Layout';
 import { UserTable } from './UserTable';
 
@@ -9,7 +8,6 @@ export class UserList extends Component {
         super(props);
         this.state = {
             users: [],
-            currentUserId: 0,
             loading: true
         };
     }
@@ -18,31 +16,6 @@ export class UserList extends Component {
         const response = await fetch('api/users');
         const data = await response.json();
         this.setState({ users: data, loading: false });
-    }
-
-    async updateUserLevel(props) {
-        props.e.preventDefault();
-        window.location.reload(false);
-        console.log(props);
-        await fetch('api/users/' + this.state.currentUserId, {
-            method: 'PUT',
-            mode: 'cors',
-            headers: {
-                'Accept': 'application/json',
-                'Content-type': 'application/json',
-            },
-            body: JSON.stringify({
-                account: {
-                    level: props.level,
-                },
-            })
-        })
-            .then(response => {
-                console.log(response)
-            })
-            .catch(error => {
-                console.log(error)
-            });
     }
 
     componentDidMount() {

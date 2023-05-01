@@ -71,7 +71,11 @@ namespace HotelPMS
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller}/{action=Index}/{id?}");
-            app.MapHub<RequestHub>("/hubs/requests");
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<RequestHub>("/hubs/requests");
+            });
 
             app.MapFallbackToFile("index.html");
 

@@ -1,30 +1,38 @@
-﻿import React, { Component } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'reactstrap';
 import Rating from '@mui/material/Rating';
 import '../../custom.css';
 
-export class HotelTable extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { hotels: [], loading: true };
-    }
+export function HotelTable(props) {
+    const [state, setState] = useState({
+        hotels: [],
+        loading: true
+    });
 
-    async populateHotelData() {
-        if (this.props.passedHotels == null) {
+    async function populateHotelData() {
+        if (props.passedHotels == null) {
             const response = await fetch('api/hotels');
             const data = await response.json();
-            this.setState({ hotels: data, loading: false });
+            setState({
+                ...state,
+                hotels: data,
+                loading: false
+            });
         }
         else {
-            this.setState({ hotels: this.props.passedHotels, loading: false });
+            setState({
+                ...state,
+                hotels: props.passedHotels,
+                loading: false
+            });
         }
     }
 
-    componentDidMount() {
-        this.populateHotelData();
-    }
+    useEffect(() => {
+        populateHotelData();
+    }, []);
     //TODO: map type to frontend types and search
-    static renderHotelsTable(hotels) {
+    function renderHotelsTable(hotels) {
         return (
             <div className="w-75">
                 {hotels.map(hotel =>
@@ -54,18 +62,14 @@ export class HotelTable extends Component {
         );
     }
 
-    render() {
-        let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
-            : this.state.hotels.length == 0
-                ? <p><em>No registered hotels.</em></p>
-                : HotelTable.renderHotelsTable(this.state.hotels);
-
-        return (
-            <div>
-                <p>Registered hotels:</p>
-                {contents}
-            </div>
-        );
-    }
+    return (
+        <div>
+            <p>Registered hotels:</p>
+            {state.loading
+                ? <p><em>Loading...</em></p>
+                : state.hotels.length == 0
+                    ? <p><em>No registered hotels.</em></p>
+                    : renderHotelsTable(state.hotels)}
+        </div>
+    );
 }

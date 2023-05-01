@@ -2,7 +2,7 @@
 import { Row, Col } from 'reactstrap';
 import '../../custom.css';
 import { Layout } from '../Layout';
-import { HubConnectionBuilder } from '@microsoft/signalr';
+import { HubConnectionBuilder, HttpTransportType } from '@microsoft/signalr';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { ReservationForm } from '../Forms/ReservationForm';
@@ -23,63 +23,11 @@ function FloorplanFunction(props) {
         link_room: '/hotel/' + props.hotelId + '/floor/',
     });
 
-    const Requests = () => {
-        const [connection, setConnection] = useState(null);
-        const [chat, setChat] = useState([]);
-        const latestChat = useRef(null);
+    const [connection, setConnection] = useState(null);
+    const [requests, setRequests] = useState([]);
+    const latestRequest = useRef(null);
 
-        latestChat.current = chat;
-
-        useEffect(() => {
-            const newConnection = new HubConnectionBuilder()
-                .withUrl('https://localhost:5001/hubs/chat')
-                .withAutomaticReconnect()
-                .build();
-
-            setConnection(newConnection);
-        }, []);
-
-        useEffect(() => {
-            if (connection) {
-                connection.start()
-                    .then(result => {
-                        console.log('Connected!');
-
-                        connection.on('ReceiveMessage', message => {
-                            const updatedChat = [...latestChat.current];
-                            updatedChat.push(message);
-
-                            setChat(updatedChat);
-                        });
-                    })
-                    .catch(e => console.log('Connection failed: ', e));
-            }
-        }, [connection]);
-
-        const sendMessage = async (user, message) => {
-            const chatMessage = {
-                user: user,
-                message: message
-            };
-
-            if (connection.connectionStarted) {
-                try {
-                    await connection.send('SendMessage', chatMessage);
-                }
-                catch (e) {
-                    console.log(e);
-                }
-            }
-            else {
-                alert('No connection to server yet.');
-            }
-        }
-
-        return (
-            <div>
-            </div>
-        );
-    };
+    latestRequest.current = requests;
 
     const Reservation = () => {
         const handleClose = () => setShow(false);
@@ -105,10 +53,10 @@ function FloorplanFunction(props) {
                         className="margin-b-5"
                     />
                     <Row>
-                        <Col>
+                        <Col className="text-center">
                             <p>Beds: <strong>{state.currentRoom.beds}</strong></p>
                         </Col>
-                        <Col>
+                        <Col className="text-center">
                             <p>Type: <strong>{state.currentRoom.type}</strong></p>
                         </Col>
                     </Row>
@@ -135,7 +83,33 @@ function FloorplanFunction(props) {
                 setState({ ...state, floors: data });
                 setLoaded(true);
             });
+
+        const newConnection = new HubConnectionBuilder()
+            .withUrl('https://localhost:7299/hubs/requests', {
+                skipNegotiation: true,
+                transport: HttpTransportType.WebSockets,
+            })
+            .withAutomaticReconnect()
+            .build();
+        setConnection(newConnection);
     }, []);
+
+    useEffect(() => {
+        if (connection) {
+            connection.start()
+                .then(result => {
+                    console.log('Connected!');
+                    connection.on("ReceiveRequest", request => {
+                        const updatedRequest = [...latestRequest.current];
+                        updatedRequest.push(request);
+                        setRequests(updatedRequest);
+                    });
+                })
+                .catch(e => {
+                    console.log('Connection failed: ', e);
+                });
+        }
+    }, [connection]);
 
     const Render = () => {
         return (

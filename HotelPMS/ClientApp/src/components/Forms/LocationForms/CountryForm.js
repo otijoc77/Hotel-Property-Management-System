@@ -2,6 +2,8 @@
 import '../../../custom.css';
 
 export function CountryForm() {
+    const [name, setName] = useState("");
+
     async function handleClick(e) {
         e.preventDefault();
         window.location.reload(false);
@@ -23,8 +25,6 @@ export function CountryForm() {
                 console.log(error)
             });
     }
-
-    const [name, setName] = useState("");
 
     return (
         <div>

@@ -40,20 +40,36 @@ export class ReservationList extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {reservations.map(reservation =>
+                        {reservations.map(reservation => reservation.registered != null &&
                             <tr key={reservation.id} onClick={() => this.handleRowClick(reservation.Id)}>
                                 <td>{reservation.hotel.name}</td>
                                 <td><a href={"/reservation/" + reservation.id} >{reservation.room.number}</a></td>
-                                <td>{dayjs(reservation.start).get('year')}-{
-                                    dayjs(reservation.start).get('month') < 9 ?
-                                        "0" + (dayjs(reservation.start).get('month') + 1) :
-                                        (dayjs(reservation.start).get('month') + 1)
-                                }-{dayjs(reservation.start).get('date')}</td>
-                                <td>{dayjs(reservation.end).get('year')}-{
-                                    dayjs(reservation.end).get('month') < 9 ?
-                                        "0" + (dayjs(reservation.end).get('month') + 1) :
-                                        (dayjs(reservation.end).get('month') + 1)
-                                }-{dayjs(reservation.end).get('date')}</td>
+                                <td>
+                                    {
+                                        dayjs(reservation.start).get('year')
+                                    }-{
+                                        dayjs(reservation.start).get('month') < 9 ?
+                                            "0" + (dayjs(reservation.start).get('month') + 1) :
+                                            (dayjs(reservation.start).get('month') + 1)
+                                    }-{
+                                        dayjs(reservation.start).get('date') < 10 ?
+                                            "0" + dayjs(reservation.start).get('date') :
+                                            dayjs(reservation.start).get('date')
+                                    }
+                                </td>
+                                <td>
+                                    {
+                                        dayjs(reservation.end).get('year')
+                                    }-{
+                                        dayjs(reservation.end).get('month') < 9 ?
+                                            "0" + (dayjs(reservation.end).get('month') + 1) :
+                                            (dayjs(reservation.end).get('month') + 1)
+                                    }-{
+                                        dayjs(reservation.end).get('date') < 10 ?
+                                            "0" + dayjs(reservation.end).get('date') :
+                                            dayjs(reservation.end).get('date')
+                                    }
+                                </td>
                             </tr>
                         )}
                     </tbody>

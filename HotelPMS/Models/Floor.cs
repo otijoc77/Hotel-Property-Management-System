@@ -1,6 +1,4 @@
-﻿using HotelPMS.Models.Enums;
-
-namespace HotelPMS.Models
+﻿namespace HotelPMS.Models
 {
     public class Floor
     {

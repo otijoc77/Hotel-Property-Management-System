@@ -6,12 +6,14 @@ import { HotelTable } from './HotelTable';
 export function HotelList() {
     const [search, setSearch] = useState("");
     const [hotels, setHotels] = useState(null);
+    const [rerender, setRerender] = useState(false);
 
     async function handleClick(e) {
         if (search != "") {
-            const response = await fetch('api/hotels/' + search);
+            const response = await fetch('api/hotels/city/' + search);
             const data = await response.json();
             setHotels(data);
+            setRerender(!rerender);
         }
     }
 
@@ -24,7 +26,10 @@ export function HotelList() {
                     <button type="button" className="btn btn-dark" onClick={(e) => handleClick(e)}>Search</button>
                 </div>
             </form>
-            <HotelTable passedHotels={hotels}/>
+            <HotelTable
+                passedHotels={hotels}
+                key={rerender}
+            />
         </Layout>
     );
 }

@@ -1,16 +1,23 @@
 ﻿import React, { useState } from 'react';
+import { useEffect } from 'react';
 import '../../custom.css';
 import { Header } from '../Navigation/Header';
 
 export function RegisterForm() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
+    const [surname, setSurname] = useState("");
+    const [gender, setGender] = useState("");
+    const [email, setEmail] = useState("");
+    const [number, setPhoneNum] = useState("");
+    const [accountId, setAccountId] = useState(0);
+
     async function handleClick(e) {
         e.preventDefault();
         if (name != "" && surname != "" && (email != "" || number != "") || username != "" && password != "") {
             await postAccount();
-            console.log("3", accountId);
-            await postUser();
         };
-        //window.location.href = '/login';
     }
 
     async function postAccount() {
@@ -30,10 +37,7 @@ export function RegisterForm() {
                 response.json()
                     .then(data => {
                         setAccountId(data.id);
-                        console.log("1", accountId);
-                        console.log("1 data", data.id);
                     });
-                console.log("2", accountId);
                 console.log(response);
             })
             .catch(error => {
@@ -41,7 +45,7 @@ export function RegisterForm() {
             });
     }
 
-    async function postUser() {
+    function postUser() {
         fetch('api/users', {
             method: 'POST',
             mode: 'cors',
@@ -66,14 +70,12 @@ export function RegisterForm() {
             });
     }
 
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
-    const [name, setName] = useState("");
-    const [surname, setSurname] = useState("");
-    const [gender, setGender] = useState("");
-    const [email, setEmail] = useState("");
-    const [number, setPhoneNum] = useState("");
-    const [accountId, setAccountId] = useState(0);
+    useEffect(() => {
+        if (accountId != 0) {
+            postUser();
+            window.location.href = '/login';
+        }
+    }, [accountId]);
 
     return (
         <>

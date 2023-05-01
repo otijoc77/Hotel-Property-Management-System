@@ -23,7 +23,7 @@ namespace HotelPMS.Controllers
             return await _hotelService.GetAllAsync();
         }
 
-        [HttpGet("{city}")]
+        [HttpGet("city/{city}")]
         public async Task<ActionResult<IEnumerable<Hotel>>> GetHotels(string city)
         {
             return await _hotelService.GetByConditionAsync(hotel => hotel.City!.Name.Contains(city));

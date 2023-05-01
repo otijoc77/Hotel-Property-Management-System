@@ -3,6 +3,9 @@ import '../../custom.css';
 import { Header } from '../Navigation/Header';
 
 export function LoginForm() {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
     async function handleClick(e) {
         e.preventDefault();
         window.location.href = '/';
@@ -27,9 +30,6 @@ export function LoginForm() {
                 });
         }
     }
-
-    const [username, setUsername] = useState("");
-    const [password, setPassword] = useState("");
 
     return (
         <div>

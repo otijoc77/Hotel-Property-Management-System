@@ -47,7 +47,7 @@ namespace HotelPMS.Repositories
 
         public async Task<T> UpdateAsync(T item)
         {
-            Context.Entry(item).State = EntityState.Modified;
+            Context.Set<T>().Update(item);
             await Context.SaveChangesAsync();
             return item;
         }

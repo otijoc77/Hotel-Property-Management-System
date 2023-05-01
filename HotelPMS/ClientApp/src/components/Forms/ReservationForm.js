@@ -37,7 +37,7 @@ export function ReservationForm(props) {
 
     return (
         <>
-            <h2 id="header">Make reservation</h2>
+            <h2 id="header" className="text-center">Make reservation</h2>
             <form>
                 <Row>
                     <Col>

@@ -1,5 +1,4 @@
 ﻿using HotelPMS.Models;
-using HotelPMS.Repositories;
 using HotelPMS.Services;
 using Microsoft.AspNetCore.Mvc;
 
