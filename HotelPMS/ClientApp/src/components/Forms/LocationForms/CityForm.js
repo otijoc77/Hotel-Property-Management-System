@@ -1,11 +1,9 @@
 ﻿import React, { useState, useEffect } from 'react';
 import '../../../custom.css';
 
-export function CityForm() {
+export function CityForm(props) {
     const [name, setName] = useState("");
     const [country, setCountry] = useState("");
-    const [countries, setCountries] = useState([]);
-    const [loaded, setLoaded] = useState(false);
 
     async function handleClick(e) {
         e.preventDefault();
@@ -30,31 +28,22 @@ export function CityForm() {
             });
     }
 
-    useEffect(() => {
-        fetch('api/countries')
-            .then(response => response.json())
-            .then(data => {
-                setCountries(data);
-                setLoaded(true);
-            });
-    }, []);
-
     return (
         <div>
             <h1 id="header" >Register city</h1>
             <form>
                 <div className="form-group">
                     <label>Name:</label>
-                    <input type="text" name="name" className="form-control w-50" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
+                    <input type="text" name="name" className="form-control w-75" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
                 </div>
                 <div className="form-group">
                     <label>Country:</label>
                     <select name="country" className="form-select w-50" value={country} onChange={(e) => setCountry(e.target.value)}>
                         <option defaultValue="">Select country</option>
-                        {loaded && countries.map((country) => <option value={country.id} key={country.id}>{country.name}</option>)}
+                        {props.countries.map((country) => <option value={country.id} key={country.id}>{country.name}</option>)}
                     </select>
                 </div>
-                <button type="button" className="btn btn-dark" disabled={name == "" || countries == [] || country == ""} onClick={(e) => handleClick(e)}>Add</button>
+                <button type="button" className="btn btn-dark" disabled={name == "" || props.countries == [] || country == ""} onClick={(e) => handleClick(e)}>Add</button>
             </form>
         </div>
     );

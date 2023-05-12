@@ -5,6 +5,7 @@ import './custom.css';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import 'dayjs/locale/en-gb';
+import { UserProvider } from './components/Functions/UserProvider';
 
 export default class App extends Component {
     static displayName = App.name;
@@ -12,12 +13,14 @@ export default class App extends Component {
     render() {
         return (
             <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="en-gb">
-                <Routes>
-                    {AppRoutes.map((route, index) => {
-                        const { element, ...rest } = route;
-                        return <Route key={index} {...rest} element={element} />;
-                    })}
-                </Routes>
+                <UserProvider>
+                    <Routes>
+                        {AppRoutes.map((route, index) => {
+                            const { element, ...rest } = route;
+                            return <Route key={index} {...rest} element={element} />;
+                        })}
+                    </Routes>
+                </UserProvider>
             </LocalizationProvider>
         );
     }

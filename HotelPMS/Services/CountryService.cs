@@ -30,9 +30,10 @@ namespace HotelPMS.Services
             return country;
         }
 
-        public Task<List<Country>> GetAllAsync()
+        public async Task<List<Country>> GetAllAsync()
         {
-            return _repository.Country.GetAllAsync();
+            List<Country> countries = await _repository.Country.GetAllAsync();
+            return countries.OrderByDescending(country => country.Name).ToList();
         }
 
         public Task<List<Country>> GetByConditionAsync(Expression<Func<Country, bool>> expression)

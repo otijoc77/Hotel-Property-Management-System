@@ -1,5 +1,6 @@
 ﻿using HotelPMS.Models;
 using HotelPMS.Repositories;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
 namespace HotelPMS.Services
@@ -7,10 +8,12 @@ namespace HotelPMS.Services
     public class FloorService : IFloorService
     {
         private readonly IRepositoryWrapper _repository;
+        private readonly IRequestService _requestService;
 
-        public FloorService(IRepositoryWrapper repository)
+        public FloorService(IRepositoryWrapper repository, IRequestService requestService)
         {
             _repository = repository;
+            _requestService = requestService;
         }
 
         public Task<Floor> CreateAsync(Floor floor)
@@ -44,6 +47,15 @@ namespace HotelPMS.Services
             foreach (Floor item in floors)
             {
                 item.Rooms = await _repository.Room.GetByConditionAsync(room => room.FloorId == item.Id);
+                foreach (Room room in item.Rooms)
+                {
+                    List<Request> list = await _requestService.GetByFunctionAsync(
+                        r => r.Sender!.RoomId == room.Id
+                        && r.State != Models.Enums.RequestState.Closed);
+                    room.ActiveRequests = list
+                        .Where(r => r.Date >= r.Sender!.Start && r.Date <= r.Sender.End)
+                        .OrderBy(r => r.Date).ToList();
+                }
             }
             return floors;
         }

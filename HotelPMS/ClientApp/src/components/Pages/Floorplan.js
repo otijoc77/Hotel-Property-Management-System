@@ -1,4 +1,4 @@
-﻿import React, { Component, useEffect, useRef, useState } from 'react';
+﻿import React, { useEffect, useRef, useState } from 'react';
 import { Row, Col } from 'reactstrap';
 import '../../custom.css';
 import { Layout } from '../Layout';
@@ -6,28 +6,36 @@ import { HubConnectionBuilder, HttpTransportType } from '@microsoft/signalr';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { ReservationForm } from '../Forms/ReservationForm';
-import withParams from '../../hooks/withParameters';
+import ServiceTypes from '../../enums/ServiceTypes';
+import { RequestTable } from '../Lists/RequestTable';
+import { useAuth } from '../Functions/UserProvider';
+import { useParams } from 'react-router-dom';
 
-function FloorplanFunction(props) {
-    //const [style, setStyle] = useState({ fill: "lime", opacity: "50%" });
-    const [url, setUrl] = useState("");
+export default function Floorplan() {
+    const { hotelId, id } = useParams();
+    const { cookies } = useAuth();
+
+    const link_back = "/hotel/" + hotelId;
+    const link_floorplan = '/hotel/' + hotelId + '/floorplan';
+    const link_add = '/hotel/' + hotelId + '/floor-register';
+    const link_room = '/hotel/' + hotelId + '/floor/';
+
+    const [style, setStyle] = useState({});
     const [loaded, setLoaded] = useState(false);
     const [show, setShow] = useState(false);
     const [state, setState] = useState({
         floors: [],
-        currentFloorIndex: -1,
-        currentFloorId: 0,
+        currentFloorId: id,
         currentRoom: {},
-        hotelId: props.hotelId,
-        link_add: '/hotel/' + props.hotelId + '/floor-register',
-        link_room: '/hotel/' + props.hotelId + '/floor/',
     });
 
     const [connection, setConnection] = useState(null);
     const [requests, setRequests] = useState([]);
+    const allFloors = useRef(null);
     const latestRequest = useRef(null);
 
     latestRequest.current = requests;
+    allFloors.current = state.floors;
 
     const Reservation = () => {
         const handleClose = () => setShow(false);
@@ -37,15 +45,16 @@ function FloorplanFunction(props) {
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width: "25%",
+            height: "75%",
             bgcolor: 'background.paper',
             border: '2px solid #b30000',
             boxShadow: 24,
             p: 4,
         };
-        //TODO: fix the user id
+
         return (
             <Modal open={show} onClose={handleClose}>
-                <Box sx={style}>
+                <Box sx={style} className="scroll">
                     <h1>{state.currentRoom.number}</h1>
                     <img
                         src={state.currentRoom.image}
@@ -60,11 +69,17 @@ function FloorplanFunction(props) {
                             <p>Type: <strong>{state.currentRoom.type}</strong></p>
                         </Col>
                     </Row>
-                    <ReservationForm
-                        userId={0}
-                        hotelId={state.hotelId}
-                        roomId={state.currentRoom.id}
-                    />
+                    {cookies.level == "Client" &&
+                        <ReservationForm
+                            userId={cookies.user}
+                            hotelId={hotelId}
+                            roomId={state.currentRoom.id}
+                            floorId={state.currentFloorId}
+                        />
+                    }
+                    {cookies.level != "Client" && cookies.level != undefined &&
+                        <RequestTable propRequests={state.currentRoom.activeRequests} />
+                    }
                 </Box>
             </Modal>
         );
@@ -75,9 +90,14 @@ function FloorplanFunction(props) {
         setShow(true);
     };
 
+    function getServiceColor(value) {
+        return ServiceTypes.find((type) => {
+            return type.label == value || type.value == value
+        }).color;
+    }
+
     useEffect(() => {
-        setUrl(window.location.href);
-        fetch('api/floors/hotel/' + state.hotelId)
+        fetch('api/floors/hotel/' + hotelId)
             .then(response => response.json())
             .then(data => {
                 setState({ ...state, floors: data });
@@ -95,6 +115,20 @@ function FloorplanFunction(props) {
     }, []);
 
     useEffect(() => {
+        state.floors.map((floor) => {
+            floor.rooms.map((room) => {
+                const filling = room.activeRequests.length > 0 && cookies.level != "Client" && cookies.level != undefined
+                    ? getServiceColor(room.activeRequests[room.activeRequests.length - 1].type)
+                    : "#79ff4d";
+                setStyle((st) => ({
+                    ...st,
+                    [room.id]: { fill: filling, opacity: "95%", stroke: "#a6a6a6", strokeWidth: "2" }
+                }));
+            })
+        })
+    }, [loaded]);
+
+    useEffect(() => {
         if (connection) {
             connection.start()
                 .then(result => {
@@ -103,6 +137,22 @@ function FloorplanFunction(props) {
                         const updatedRequest = [...latestRequest.current];
                         updatedRequest.push(request);
                         setRequests(updatedRequest);
+                        console.log(request);
+                        if (request.sender.hotelId == hotelId) {
+                            setShow(false);
+                            const room = allFloors.current.find((floor) => { return floor.id == request.sender.floorId })
+                                .rooms.find((room) => { return room.id == request.sender.roomId });
+                            room.activeRequests.push(request);
+                            setState({ ...state, floors: allFloors.current });
+                            if (cookies.level != "Client") {
+                                console.log(cookies.level);
+                                console.log(cookies.level != "Client");
+                                setStyle(st => ({
+                                    ...st,
+                                    [room.id]: { fill: getServiceColor(room.activeRequests[room.activeRequests.length - 1].type), opacity: "95%", stroke: "#a6a6a6", strokeWidth: "2" }
+                                }))
+                            }
+                        }
                     });
                 })
                 .catch(e => {
@@ -114,19 +164,34 @@ function FloorplanFunction(props) {
     const Render = () => {
         return (
             <Layout>
-                <Reservation/>
-                <h1 id="header" >Floorplan</h1>
+                <Reservation />
+                <div className="w-100 d-table">
+                    <h1 id="header" className="d-table-cell">Floorplan</h1>
+                    <div className="d-table-cell text-r">
+                        <button className="btn btn-dark" onClick={e => window.location.href = link_back} >Back</button>
+                    </div>
+                </div>
                 <div className="form-group">
-                    <label>Floor:</label>
-                    <Row className="m-1">
-                        <select name="floor" className="form-select w-50" value={state.currentFloorIndex} onChange={(e) => { setState({ ...state, currentFloorIndex: e.target.value, currentFloorId: state.floors[e.target.value].id }); window.history.replaceState(null, '', url + "/" + state.floors[e.target.value].id) }}>
-                            <option defaultValue="-1" >Select floor</option>
-                            {state.floors.map((floor, index) => <option value={index} key={floor.id}>{floor.number}</option>)}
-                        </select>
-                        <button className="btn btn-dark w-100p margin-2" onClick={e => window.location.href = state.link_add} >Add new</button>
-                        <button className="btn btn-dark w-100p margin-2" onClick={e => window.location.href = state.link_room + state.currentFloorId} disabled={state.currentFloorId == 0}>Add room</button>
-                    </Row>
-                    {state.currentFloorId != 0 &&
+                    <div className="w-100 d-table">
+                        <div className="d-table-cell m-1">
+                            <label className="margin-r-5">Floor:</label>
+                            <select name="floor" className="d-inline form-select w-50 margin-r-5" value={state.currentFloorId} onChange={(e) => {
+                                setState({ ...state, currentFloorId: e.target.value });
+                                let link = e.target.value == 0 ? link_floorplan : link_floorplan + "/" + e.target.value;
+                                window.location.href = link;
+                            }}>
+                                <option value="0">Select floor</option>
+                                {state.floors.map((floor) => <option defaultValue={id === floor.id} value={floor.id} key={floor.id}>{floor.number}</option>)}
+                            </select>
+                            {cookies.level == "Admin" &&
+                                <>
+                                    <button className="btn btn-dark w-100p margin-2" onClick={e => window.location.href = link_add} >Add new</button>
+                                    <button className="btn btn-dark w-120p margin-2" onClick={e => window.location.href = link_room + state.currentFloorId} disabled={state.currentFloorId == 0 || state.currentFloorId == undefined}>Add room</button>
+                                </>
+                            }
+                        </div>
+                    </div>
+                    {state.currentFloorId != 0 && state.currentFloorId != undefined ?
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width={1000}
@@ -137,10 +202,35 @@ function FloorplanFunction(props) {
                                 overflow="visible"
                                 width={1000}
                                 height={1000}
-                                href={state.floors[state.currentFloorIndex].floorplan}
+                                href={state.floors.find((floor) => { return floor.id == state.currentFloorId }).floorplan}
                             />
-                            {state.floors[state.currentFloorIndex].rooms.map((room) => <polygon key={room.id} points={room.border} style={{ fill: "lime", opacity: "50%" }} onClick={e => roomClick(room)} />)}
-                        </svg>}
+                            {state.floors.find((floor) => { return floor.id == state.currentFloorId }).rooms.map((room) =>
+                                < polygon key={room.id} points={room.border} style={style[`${room.id}`]} onClick={e => roomClick(room)} />
+                            )}
+                        </svg> :
+                        <div>
+                            {state.floors.map((floor) => {
+                                <div>
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width={1000}
+                                        height={1000}
+                                    >
+                                        <image
+                                            display="flex"
+                                            overflow="visible"
+                                            width={1000}
+                                            height={1000}
+                                            href={floor.floorplan}
+                                        />
+                                        {floor.rooms.map((room) =>
+                                            < polygon key={room.id} points={room.border} style={style[`${room.id}`]} onClick={e => roomClick(room)} />
+                                        )}
+                                    </svg>
+                                </div>
+                            })}
+                        </div>
+                    }
                 </div>
             </Layout >
         );
@@ -152,18 +242,3 @@ function FloorplanFunction(props) {
         </>
     );
 };
-
-class Floorplan extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { hotelId: this.props.params.hotelId };
-    }
-
-    render() {
-        return (
-            <FloorplanFunction hotelId={this.state.hotelId} />
-        )
-    };
-}
-
-export default withParams(Floorplan);

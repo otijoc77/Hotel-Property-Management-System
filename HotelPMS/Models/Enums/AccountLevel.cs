@@ -6,6 +6,6 @@
         Manager,
         Worker,
         Client,
-        Owner
+        Owner,
     }
 }

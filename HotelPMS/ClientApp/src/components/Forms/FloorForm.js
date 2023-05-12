@@ -1,10 +1,15 @@
-﻿import React, { useState, Component } from 'react';
+﻿import React, { useEffect, useState } from 'react';
+import { Row, Col } from 'reactstrap';
 import '../../custom.css';
-import withParams from '../../hooks/withParameters';
 import { Layout } from '../Layout';
+import { useAuth } from '../Functions/UserProvider';
+import { useParams } from 'react-router-dom';
 
-function FloorFormFunction(hotelId) {
-    const link_back = "/hotel/" + hotelId.hotelId + "/floorplan";
+export default function FloorForm() {
+    const { hotelId } = useParams();
+    const { cookies } = useAuth();
+
+    const link_back = "/hotel/" + hotelId + "/floorplan";
     const [number, setNumber] = useState(0);
     const [area, setArea] = useState(0);
     const [image, setImage] = useState("");
@@ -24,7 +29,7 @@ function FloorFormFunction(hotelId) {
                     number: number,
                     area: area,
                     floorplan: image,
-                    hotelId: hotelId.hotelId,
+                    hotelId: hotelId,
                 })
             })
                 .then(response => {
@@ -34,7 +39,16 @@ function FloorFormFunction(hotelId) {
                     console.log(error)
                 })
         }
-    }
+    };
+
+    useEffect(() => {
+        if (cookies.name == undefined) {
+            window.location.href = '/login';
+        }
+        if (cookies.level != "Admin") {
+            window.location.href = '/unauthorised';
+        }
+    }, []);
 
     return (
         <Layout>
@@ -46,14 +60,20 @@ function FloorFormFunction(hotelId) {
             </div>
             <form>
                 <div className="row w-100">
-                    <div className="form-group">
-                        <label>Number:</label>
-                        <input type="number" name="number" className="form-control w-25" value={number} onChange={(e) => setNumber(e.target.value)} required />
-                    </div>
-                    <div className="form-group">
-                        <label>Area (m<sup>2</sup>):</label>
-                        <input type="number" name="area" className="form-control w-25" value={area} onChange={(e) => setArea(e.target.value)} />
-                    </div>
+                    <Row className="w-50">
+                        <Col>
+                            <div className="form-group">
+                                <label>Number:</label>
+                                <input type="number" name="number" className="form-control w-100" value={number} onChange={(e) => setNumber(e.target.value)} required />
+                            </div>
+                        </Col>
+                        <Col>
+                            <div className="form-group">
+                                <label>Area (m<sup>2</sup>):</label>
+                                <input type="number" name="area" className="form-control w-100" value={area} onChange={(e) => setArea(e.target.value)} />
+                            </div>
+                        </Col>
+                    </Row>
                     <div className="form-group">
                         <label>Image url:</label>
                         <input type="text" name="image" className="form-control w-75" placeholder="Image" value={image} onChange={(e) => setImage(e.target.value)} required />
@@ -65,19 +85,3 @@ function FloorFormFunction(hotelId) {
         </Layout>
     );
 }
-
-class FloorForm extends Component {
-    constructor(props) {
-        super(props);
-        console.log(this.props);
-        this.state = { hotelId: this.props.params.hotelId };
-    }
-
-    render() {
-        return (
-            <FloorFormFunction hotelId={this.state.hotelId} />
-        )
-    };
-}
-
-export default withParams(FloorForm);

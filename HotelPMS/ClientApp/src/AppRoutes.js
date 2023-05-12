@@ -6,7 +6,7 @@ import HotelForm from "./components/Forms/HotelForm";
 import { RegisterForm } from "./components/Forms/RegisterForm";
 import { LoginForm } from "./components/Forms/LoginForm";
 import { HomePage } from "./components/Pages/HomePage";
-import { LocationForm } from "./components/Forms/LocationForms/LocationForm";
+import { Locations } from "./components/Forms/LocationForms/Locations";
 import HotelPage from "./components/Pages/HotelPage";
 import Floorplan from "./components/Pages/Floorplan";
 import FloorForm from "./components/Forms/FloorForm";
@@ -15,15 +15,13 @@ import { UserList } from "./components/Lists/UserList";
 import { HotelList } from "./components/Lists/HotelList";
 import { ReservationForm } from "./components/Forms/ReservationForm";
 import ReservationPage from "./components/Pages/ReservationPage";
-import { ReservationList } from "./components/Lists/ReservationList";
+import { UserPage } from "./components/Pages/UserPage";
+import { MetricsPage } from "./components/Pages/MetricsPage";
+import { UnauthorisedPage } from "./components/Pages/UnauthorisedPage";
 
 const AppRoutes = [
     {
         index: true,
-        element: <Home />
-    },
-    {
-        path: '/home',
         element: <HomePage />
     },
     {
@@ -75,8 +73,8 @@ const AppRoutes = [
         element: <RoomForm />
     },
     {
-        path: '/reservation-list',
-        element: <ReservationList />
+        path: '/user',
+        element: <UserPage />
     },
     {
         path: '/reservation/:id',
@@ -84,7 +82,7 @@ const AppRoutes = [
     },
     {
         path: '/location-register',
-        element: <LocationForm />
+        element: <Locations />
     },
     {
         path: '/users',
@@ -101,6 +99,14 @@ const AppRoutes = [
     {
         path: '/reservation',
         element: <ReservationForm />
+    },
+    {
+        path: '/metrics',
+        element: <MetricsPage />
+    },
+    {
+        path: '/unauthorised',
+        element: <UnauthorisedPage />
     },
 ];
 

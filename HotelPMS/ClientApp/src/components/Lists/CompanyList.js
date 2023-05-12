@@ -1,43 +1,58 @@
-﻿import React, { Component } from 'react';
+﻿import React, { Component, useEffect, useState } from 'react';
 import '../../custom.css';
 import { Col, Row } from 'reactstrap';
 import { Layout } from '../Layout';
+import { useAuth } from '../Functions/UserProvider';
 
-export class CompanyList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { companies: [], loading: true };
-    }
+export function CompanyList() {
+    const size = 100;
+    const { cookies } = useAuth();
 
-    async populateCompanyData() {
+    const [state, setState] = useState({
+        companies: [],
+        loading: true
+    });
+
+    async function populateCompanyData() {
         const response = await fetch('api/companies');
         const data = await response.json();
-        this.setState({ companies: data, loading: false });
-    }
+        setState({ companies: data, loading: false });
+    };
 
-    componentDidMount() {
-        this.populateCompanyData();
-    }
+    useEffect(() => {
+        populateCompanyData();
+    }, []);
 
-    handleOnClick() {
+    function handleOnClick() {
         window.location.href = '/company-register';
-    }
+    };
 
-    handleRowClick() {
-        window.location.href = '/company/:id';
-    }
+    function handleRowClick(id) {
+        window.location.href = '/company/' + id;
+    };
 
-    static renderCompaniesTable(companies) {
-        return (
+    let contents = state.loading
+        ? <p><em>Loading...</em></p>
+        : state.companies.length == 0
+            ? <p><em>No registered companies.</em></p>
+            :
             <div>
-                {companies.map(company =>
-                    <div className="card p-2 margin-b-20" key={company.id} onClick={() => this.handleRowClick(company.Id)}>
+                {state.companies.map(company =>
+                    <div className="card p-2 margin-b-20 border-light" key={company.id} onClick={() => handleRowClick(company.id)}>
                         <Row>
                             <Col>
-                                {company.logo}
+                                <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size}>
+                                    <image
+                                        display="flex"
+                                        overflow="visible"
+                                        width={size}
+                                        height={size}
+                                        href={company.logo}
+                                    />
+                                </svg>
                             </Col>
                             <Col>
-                                <h2><a href={"/company/" + company.id} >{company.name}</a></h2>
+                                <h2>{company.name}</h2>
                             </Col>
                             <Col>
                                 <p>{company.description}</p>
@@ -46,27 +61,20 @@ export class CompanyList extends Component {
                     </div>
                 )}
             </div>
-        );
-    }
 
-    render() {
-        let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
-            : this.state.companies.length == 0
-                ? <p><em>No registered companies.</em></p>
-                : CompanyList.renderCompaniesTable(this.state.companies);
-
-        return (
-            <Layout>
-                <h1 id="tabelLabel" >Companies</h1>
-                <div className="w-100 d-table margin-b-5">
-                    <p className="d-table-cell">Registered companies:</p>
+    return (
+        <Layout>
+            <h1 id="tabelLabel" >Companies</h1>
+            <div className="w-100 d-table margin-b-5">
+                <p className="d-table-cell">Registered companies:</p>
+                {cookies.level == "Admin" || cookies.level == "Owner" ?
                     <div className="d-table-cell text-r">
-                        <button className="btn btn-dark" onClick={this.handleOnClick}>Register new company</button>
+                        <button className="btn btn-dark" onClick={handleOnClick}>Register new company</button>
                     </div>
-                </div>
-                {contents}
-            </Layout>
-        );
-    }
+                    : <></>
+                }
+            </div>
+            {contents}
+        </Layout>
+    );
 }

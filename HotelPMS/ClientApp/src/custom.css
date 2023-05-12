@@ -1,6 +1,18 @@
 /* Provide sufficient contrast against white background */
+body {
+    font-family: "Verdana", sans-serif;
+}
+
 a {
   color: #0366d6;
+}
+
+p, label {
+    font-size: 13pt;
+}
+
+h1, h2, h3,  h4 {
+    font-family: "Georgia", serif;
 }
 
 code {
@@ -52,6 +64,10 @@ label {
     width: 100px;
 }
 
+.w-120p {
+    width: 120px;
+}
+
 .canvas-card {
     width: 1000px;
     height: 1000px;
@@ -67,7 +83,11 @@ label {
 }
 
 .d-table-cell {
-    display: table-cell;
+    display: table-cell !important;
+}
+
+.d-inline {
+    display: inline !important;
 }
 
 .text-r {
@@ -80,6 +100,10 @@ label {
 
 .d-block {
     display: block;
+}
+
+.margin-r-5 {
+    margin-right: 5px;
 }
 
 .margin-b-5 {
@@ -104,4 +128,17 @@ label {
 
 .float-r {
     float: right;
+}
+
+.scroll {
+    overflow: auto;
+}
+
+.icon {
+    text-align: center;
+    margin: 5px;
+}
+
+.bg-color {
+    background-color: #b30000;
 }

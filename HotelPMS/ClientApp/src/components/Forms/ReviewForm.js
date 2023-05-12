@@ -3,8 +3,11 @@ import { Row, Col } from 'reactstrap';
 import Rating from '@mui/material/Rating';
 import '../../custom.css';
 import withParams from '../../hooks/withParameters';
+import { useAuth } from '../Functions/UserProvider';
 
 export function ReviewFormFunction(hotelId) {
+    const { cookies } = useAuth();
+
     const [rating, setRating] = useState(0);
     const [text, setText] = useState("");
     const [anonymous, setAnonimity] = useState(false);
@@ -36,29 +39,33 @@ export function ReviewFormFunction(hotelId) {
     }
 
     return (
-        <div className="card w-75 p-2">
-            <form>
-                <Row>
-                    <Col>
+        <>
+            {cookies.level == "Client" &&
+                <div className="card w-75 p-2">
+                    <form>
+                        <Row>
+                            <Col>
+                                <div className="form-group">
+                                    <label>Rating:&nbsp;</label>
+                                    <Rating className="align-middle" name="simple-controlled" value={rating} onChange={(e) => setRating(e.target.value)} />
+                                </div>
+                            </Col>
+                            <Col>
+                                <div className="form-group">
+                                    <input type="checkbox" className="form-check-input" id="check" value={anonymous} onChange={(e) => setAnonimity(!anonymous)} />
+                                    <label>Anonymous</label>
+                                </div>
+                            </Col>
+                        </Row>
                         <div className="form-group">
-                            <label>Rating:&nbsp;</label>
-                            <Rating className="align-middle" name="simple-controlled" value={rating} onChange={(e) => setRating(e.target.value)} />
+                            <label>Comment:</label>
+                            <textarea name="text" className="form-control w-75" placeholder="Comment" value={text} onChange={(e) => setText(e.target.value)} />
                         </div>
-                    </Col>
-                    <Col>
-                        <div className="form-group">
-                            <input type="checkbox" className="form-check-input" id="check" value={anonymous} onChange={(e) => setAnonimity(!anonymous)} />
-                            <label>Anonymous</label>
-                        </div>
-                    </Col>
-                </Row>
-                <div className="form-group">
-                    <label>Comment:</label>
-                    <textarea name="text" className="form-control w-75" placeholder="Comment" value={text} onChange={(e) => setText(e.target.value)} />
+                        <button type="button" className="btn btn-dark" onClick={(e) => handleClick(e)}>Submit</button>
+                    </form>
                 </div>
-                <button type="button" className="btn btn-dark" onClick={(e) => handleClick(e)}>Submit</button>
-            </form>
-        </div>
+            }
+        </>
     );
 }
 

@@ -8,7 +8,7 @@ export function HotelList() {
     const [hotels, setHotels] = useState(null);
     const [rerender, setRerender] = useState(false);
 
-    async function handleClick(e) {
+    async function handleClick() {
         if (search != "") {
             const response = await fetch('api/hotels/city/' + search);
             const data = await response.json();
@@ -23,7 +23,7 @@ export function HotelList() {
             <form className="w-75 d-table margin-b-5">
                 <input type="text" name="search" className="form-control d-table-cell margin-2" placeholder="City" value={search} onChange={(e) => setSearch(e.target.value)} required/>
                 <div className="d-table-cell">
-                    <button type="button" className="btn btn-dark" onClick={(e) => handleClick(e)}>Search</button>
+                    <button type="button" className="btn btn-dark" onClick={(e) => handleClick()}>Search</button>
                 </div>
             </form>
             <HotelTable

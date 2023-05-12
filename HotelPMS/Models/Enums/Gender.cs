@@ -5,6 +5,6 @@
         Woman,
         Man,
         Nonbinary,
-        Other
+        Other,
     }
 }

@@ -1,36 +1,37 @@
-﻿import React, { Component } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Row, Container } from 'reactstrap';
 import { HotelTable } from '../Lists/HotelTable';
 import '../../custom.css';
 import { Layout } from '../Layout';
-import withParams from '../../hooks/withParameters';
 import { UserTable } from '../Lists/UserTable';
+import { useParams } from 'react-router-dom';
+import { useAuth } from '../Functions/UserProvider';
 
-class CompanyPage extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            company: { id: 0, code: "", name: "", description: "", hotels: [], employees: [] },
-            id: this.props.params.id,
-            loaded: false,
-            link_back: '/company-list',
-            link_hotel: '/company/' + this.props.params.id + '/hotel-register',
-            link_company: '/company/' + this.props.params.id + '/edit'
-        };
-    }
+export default function CompanyPage() {
+    const size = 200;
+    const { id } = useParams();
+    const link_hotel = '/company/' + id + '/hotel-register';
+    const link_back = '/company-list';
+    const link_company = '/company/' + id + '/edit';
+    const { cookies } = useAuth();
 
-    async refreshList() {
-        await fetch('api/companies/' + this.state.id)
+    const [state, setState] = useState({
+        company: { id: 0, code: "", name: "", description: "", hotels: [], employees: [] },
+        id: id,
+        loaded: false,
+    });
+
+    async function getCompany() {
+        await fetch('api/companies/' + state.id)
             .then(response => response.json())
             .then(data => {
-                this.setState({ company: data, loaded: true });
-                console.log(data)
+                setState({ company: data, loaded: true });
             })
-    }
+    };
 
-    async deleteClick() {
-        window.location.href = this.state.link_back;
-        await fetch('api/companies/' + this.state.id, {
+    async function deleteClick() {
+        window.location.href = link_back;
+        await fetch('api/companies/' + state.id, {
             method: 'DELETE',
         })
             .then(response => {
@@ -39,45 +40,55 @@ class CompanyPage extends Component {
             .catch(error => {
                 console.log(error)
             })
-    }
-
-    componentDidMount() {
-        this.refreshList();
-    }
-
-    render() {
-        return (
-            <Layout>
-                <h1 id="name" >{this.state.company.name}</h1>
-                <Container>
-                    <Row>
-                        <svg xmlns="http://www.w3.org/2000/svg" width={100} height={100}>
-                            <g fill="#61DAFB">
-                                <circle cx="50" cy="50" r="50" />
-                            </g>
-                        </svg>
-                        <p>{this.state.company.description}</p>
-                    </Row>
-                    <Row>
-                        <button className="btn btn-dark w-100p margin-2" onClick={e => window.location.href = this.state.link_company} >Edit</button>
-                        <button className="btn btn-danger btn-red w-100p margin-2" onClick={e => this.deleteClick()} >Delete</button>
-                    </Row>
-                    <Row>
-                        <button className="btn btn-dark w-200p margin-b-5 margin-2" onClick={e => window.location.href = this.state.link_hotel} >Register new hotel</button>
-                    </Row>
-                    {this.state.loaded &&
-                        <>
-                        <HotelTable companyHotels={this.state.company.hotels} />
-                        {this.state.company.employees.length > 0 ?
-                            <UserTable users={this.state.company.employees} admin={false} /> :
-                            <p><em>No registered employees.</em></p>
-                        }
-                        </>
-                    }
-                </Container>
-            </Layout>
-        )
     };
-}
 
-export default withParams(CompanyPage);
+    useEffect(() => {
+        getCompany();
+    }, []);
+
+    return (
+        <Layout>
+            {console.log(state.company)}
+            <h1 id="name" >{state.company.name}</h1>
+            <Container>
+                <Row>
+                    {(state.company.logo != null && state.company.logo != "") &&
+                        <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size}>
+                            <image
+                                display="flex"
+                                overflow="visible"
+                                width={size}
+                                height={size}
+                                href={state.company.logo}
+                            />
+                        </svg>
+                    }
+                    <p>{state.company.description}</p>
+                </Row>
+                {cookies.level == "Admin" || cookies.level == "Owner" ?
+                    <>
+                        <Row>
+                            <button className="btn btn-dark w-100p margin-2" onClick={e => window.location.href = link_company} >Edit</button>
+                            <button className="btn btn-danger btn-red w-100p margin-2" onClick={e => deleteClick()} >Delete</button>
+                        </Row>
+                        <Row>
+                            <button className="btn btn-dark w-200p margin-b-5 margin-2" onClick={e => window.location.href = link_hotel} >Register new hotel</button>
+                        </Row>
+                    </>
+                    : <></>
+                }
+                {state.loaded &&
+                    <>
+                    <HotelTable passedHotels={state.company.hotels} />
+                        {cookies.level == "Admin" || cookies.level == "Owner" ? 
+                            state.company.employees.length > 0 ?
+                                <UserTable users={state.company.employees} admin={false} /> :
+                                <p><em>No registered employees.</em></p>
+                        : <></>
+                        }
+                    </>
+                }
+            </Container>
+        </Layout>
+    );
+}

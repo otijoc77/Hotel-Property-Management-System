@@ -1,48 +1,53 @@
-﻿import React, { Component } from 'react';
+﻿import React, { useState } from 'react';
 import '../../custom.css';
 import { Layout } from '../Layout';
 import { UserTable } from './UserTable';
+import { useAuth } from '../Functions/UserProvider';
+import { useEffect } from 'react';
 
-export class UserList extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            users: [],
-            loading: true
-        };
-    }
+export function UserList() {
+    const { cookies } = useAuth();
 
-    async populateUserData() {
+    const [state, setState] = useState({
+        users: [],
+        loading: true
+    });
+
+    async function populateUserData() {
         const response = await fetch('api/users');
         const data = await response.json();
-        this.setState({ users: data, loading: false });
+        setState({ users: data, loading: false });
     }
 
-    componentDidMount() {
-        this.populateUserData();
-    }
+    useEffect(() => {
+        if (cookies.name == undefined) {
+            window.location.href = '/login';
+        }
+        /*if (cookies.level != "Admin") {
+            window.location.href = '/unauthorised';
+        }*/
+        populateUserData();
+    }, [])
 
-    static renderUsersTable(users) {
+    function renderUsersTable(users) {
         return (
-            <UserTable users={users} admin={true}/>
+            <UserTable users={users} admin={true} />
         );
     }
 
-    render() {
-        let contents = this.state.loading
-            ? <p><em>Loading...</em></p>
-            : this.state.users.length == 0
-                ? <p><em>No registered users.</em></p>
-                : UserList.renderUsersTable(this.state.users);
+    let contents = state.loading
+        ? <p><em>Loading...</em></p>
+        : state.users.length == 0
+            ? <p><em>No registered users.</em></p>
+            : renderUsersTable(state.users);
 
-        return (
-            <Layout>
-                <h1 id="tabelLabel" >Users</h1>
-                <div className="w-100 d-table">
-                    <p className="d-table-cell">Registered users:</p>
-                </div>
-                {contents}
-            </Layout>
-        );
-    }
+    return (
+        <Layout>
+            <h1 id="tabelLabel" >Users</h1>
+            <div className="w-100 d-table">
+                <p className="d-table-cell">Registered users:</p>
+            </div>
+            {contents}
+        </Layout>
+    );
 }

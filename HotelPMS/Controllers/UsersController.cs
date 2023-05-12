@@ -29,6 +29,18 @@ namespace HotelPMS.Controllers
             return await _userService.GetByIdAsync(id);
         }
 
+        [HttpGet("company/{id}")]
+        public async Task<ActionResult<IEnumerable<User>>> GetCompanyUsers(int id)
+        {
+            return await _userService.GetByConditionAsync(user => user.CompanyId == id);
+        }
+
+        [HttpGet("hotel/{id}")]
+        public async Task<ActionResult<IEnumerable<User>>> GetHotelUsers(int id)
+        {
+            return await _userService.GetByConditionAsync(user => user.HotelId == id);
+        }
+
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {

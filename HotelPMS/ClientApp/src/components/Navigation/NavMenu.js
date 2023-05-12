@@ -2,33 +2,34 @@
 import { ListGroup, NavItem, NavLink, UncontrolledAccordion, AccordionItem, AccordionHeader, AccordionBody } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import './NavMenu.css';
+import HomeIcon from '@mui/icons-material/Home';
+import PersonIcon from '@mui/icons-material/Person';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import ApartmentIcon from '@mui/icons-material/Apartment';
+import EqualizerIcon from '@mui/icons-material/Equalizer';
+import PublicIcon from '@mui/icons-material/Public';
+import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 
 export class NavMenu extends Component {
     render() {
         return (
-            <ListGroup flush className="flex-grow-1">
+            <ListGroup flush className="flex-grow-1 separate">
                 <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
+                    <NavLink tag={Link} className="text-dark" to="/"><b><HomeIcon className="icon" />Home</b></NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/reservation-list">Reservation List</NavLink>
+                    <NavLink tag={Link} className="text-dark" to="/user"><b><PersonIcon className="icon" />User</b></NavLink>
                 </NavItem>
-                <UncontrolledAccordion flush stayOpen defaultOpen={["3"]}>
-                    <AccordionItem>
-                        <AccordionHeader targetId="3">
-                            <b>Locations</b>
-                        </AccordionHeader>
-                        <AccordionBody accordionId="3">
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/location-register">Add Locations</NavLink>
-                            </NavItem>
-                        </AccordionBody>
-                    </AccordionItem>
-                </UncontrolledAccordion>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/metrics"><b><EqualizerIcon className="icon" />Metrics</b></NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/location-register"><b><PublicIcon className="icon" />Locations</b></NavLink>
+                </NavItem>
                 <UncontrolledAccordion flush stayOpen defaultOpen={["1"]}>
                     <AccordionItem>
                         <AccordionHeader targetId="1">
-                            <b>Companies</b>
+                            <b><BusinessCenterIcon className="icon" />Companies</b>
                         </AccordionHeader>
                         <AccordionBody accordionId="1">
                             <NavItem>
@@ -40,30 +41,12 @@ export class NavMenu extends Component {
                         </AccordionBody>
                     </AccordionItem>
                 </UncontrolledAccordion>
-                <UncontrolledAccordion flush stayOpen defaultOpen={["2"]}>
-                    <AccordionItem>
-                        <AccordionHeader targetId="2">
-                            <b>Hotels</b>
-                        </AccordionHeader>
-                        <AccordionBody accordionId="2">
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/hotel-list">Hotel List</NavLink>
-                            </NavItem>
-                        </AccordionBody>
-                    </AccordionItem>
-                </UncontrolledAccordion>
-                <UncontrolledAccordion flush stayOpen defaultOpen={["4"]}>
-                    <AccordionItem>
-                        <AccordionHeader targetId="4">
-                            <b>Users</b>
-                        </AccordionHeader>
-                        <AccordionBody accordionId="4">
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/users">User List</NavLink>
-                            </NavItem>
-                        </AccordionBody>
-                    </AccordionItem>
-                </UncontrolledAccordion>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/hotel-list"><b><ApartmentIcon className="icon" />Hotels</b></NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={Link} className="text-dark" to="/users"><b><PeopleAltIcon className="icon" />Users</b></NavLink>
+                </NavItem>
             </ListGroup>
         );
     }

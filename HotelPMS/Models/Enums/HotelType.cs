@@ -8,8 +8,6 @@
         Inn,
         AllSuit,
         Convention,
-        Extended,
-        Covention,
         ExtendedStay,
         Boutique,
         Bunkhouse,
@@ -18,6 +16,6 @@
         Micro,
         Heritage,
         Hostel,
-        Transit
+        Transit,
     }
 }

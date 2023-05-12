@@ -26,3 +26,16 @@ html {
     font-weight: bold;
     font-size: 16pt;
 }
+
+.wide {
+    width: 100%;
+}
+
+.pt {
+    font-size: 12pt;
+}
+
+button {
+    background-color: transparent;
+    border: none;
+}

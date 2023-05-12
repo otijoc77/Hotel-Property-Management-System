@@ -1,9 +1,12 @@
-﻿import React, { useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import '../../custom.css';
+import { useAuth } from '../Functions/UserProvider';
 import { Layout } from '../Layout';
 
 export function CompanyForm() {
     const link_back = "/company-list";
+
+    const { cookies } = useAuth();
 
     const [code, setCode] = useState("");
     const [name, setName] = useState("");
@@ -23,6 +26,7 @@ export function CompanyForm() {
             body: JSON.stringify({
                 code: code,
                 name: name,
+                logo: logo,
                 description: description,
             })
         })
@@ -33,6 +37,15 @@ export function CompanyForm() {
                 console.log(error)
             });
     }
+
+    useEffect(() => {
+        if (cookies.name == undefined) {
+            window.location.href = '/login';
+        }
+        if (cookies.level != "Admin") {
+            window.location.href = '/unauthorised';
+        }
+    }, [])
 
     return (
         <Layout>
@@ -50,6 +63,11 @@ export function CompanyForm() {
                 <div className="form-group">
                     <label>Name:</label>
                     <input type="text" name="name" className="form-control w-50" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} required />
+                </div>
+                <div className="form-group">
+                    <label>Company logo url:</label>
+                    <input type="text" name="logo" className="form-control w-75" placeholder="Logo" value={logo} onChange={(e) => setLogo(e.target.value)} />
+                    <small id="logoHelp" className="form-text text-muted">Url for company logo.</small>
                 </div>
                 <div className="form-group">
                     <label>Description:</label>

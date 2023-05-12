@@ -6,6 +6,6 @@
         Bed,
         Layout,
         Amenity,
-        Suite
+        Suite,
     }
 }

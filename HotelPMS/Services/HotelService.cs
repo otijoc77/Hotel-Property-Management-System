@@ -33,9 +33,14 @@ namespace HotelPMS.Services
             return hotels;
         }
 
-        public Task<List<Hotel>> GetByConditionAsync(Expression<Func<Hotel, bool>> expression)
+        public async Task<List<Hotel>> GetByConditionAsync(Expression<Func<Hotel, bool>> expression)
         {
-            return _repository.Hotel.GetByConditionAsync(expression);
+            List<Hotel> hotels = await _repository.Hotel.GetByConditionAsync(expression);
+            foreach (var hotel in hotels)
+            {
+                hotel.City = await _repository.City.GetAsync(hotel.CityId);
+            }
+            return hotels;
         }
 
         public async Task<Hotel> GetByIdAsync(int id)

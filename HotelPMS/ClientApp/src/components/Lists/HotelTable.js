@@ -31,29 +31,31 @@ export function HotelTable(props) {
     useEffect(() => {
         populateHotelData();
     }, []);
-    //TODO: map type to frontend types and search
+    
     function renderHotelsTable(hotels) {
         return (
             <div className="w-75">
                 {hotels.map(hotel =>
-                    <div className="card p-2 margin-b-20" key={hotel.id}>
+                    <div className="card p-2 margin-b-20" key={hotel.id} onClick={e => window.location.href = "/hotel/" + hotel.id }>
                         <Row className="margin-b-0">
                             <Col>
                                 <img
                                     src={hotel.image}
                                     width={100}
+                                    className="rounded border border-dark"
                                 />
                             </Col>
                             <Col>
-                                <h4><a href={"/hotel/" + hotel.id} >{hotel.name}</a></h4>
+                                <h4><strong>{hotel.name}</strong></h4>
                                 <Rating value={hotel.rating} size="small" readOnly />
                             </Col>
                             <Col>
-                                {/*<p>{hotel.city.name}</p>*/}
-                                <p>{hotel.address}</p>
+                                <p><strong>{hotel.city.name}</strong></p>
+                                <p><strong>{hotel.address}</strong></p>
                             </Col>
                             <Col>
-                                <p>{hotel.type}</p>
+                                <p>Type:</p>
+                                <p><strong>{hotel.type}</strong></p>
                             </Col>
                         </Row>
                     </div>

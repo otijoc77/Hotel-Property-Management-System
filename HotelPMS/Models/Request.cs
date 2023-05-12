@@ -13,6 +13,6 @@ namespace HotelPMS.Models
         // Foreign keys
         public int SenderId { get; set; }
         public Reservation? Sender { get; set; }
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
     }
 }

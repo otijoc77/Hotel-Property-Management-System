@@ -7,10 +7,10 @@ import { Row, Col } from 'reactstrap';
 export function ReservationForm(props) {
     const [start, setStart] = useState(dayjs());
     const [end, setEnd] = useState(dayjs().add(1, 'day'));
-    //TODO: search for userId: 0 and change to current user id
+
     async function handleClick(e) {
         e.preventDefault();
-        window.location.href = "/reservation-list";
+        window.location.href = "/user";
         await fetch('api/reservations', {
             method: 'POST',
             mode: 'cors',
@@ -24,6 +24,7 @@ export function ReservationForm(props) {
                 userId: props.userId,
                 hotelId: props.hotelId,
                 roomId: props.roomId,
+                floorId: props.floorId,
                 checkedIn: false,
             })
         })
@@ -53,7 +54,7 @@ export function ReservationForm(props) {
                         </div>
                     </Col>
                 </Row>
-                <button type="button" className="btn btn-dark" disabled={start == undefined || end == undefined} onClick={(e) => handleClick(e)}>Register</button>
+                <button type="button" className="btn btn-dark margin-b-20" disabled={start == undefined || end == undefined} onClick={(e) => handleClick(e)}>Register</button>
             </form>
         </>
     );

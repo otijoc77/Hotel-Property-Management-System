@@ -1,13 +1,18 @@
-﻿import React, { useState, useEffect, Component } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import Rating from '@mui/material/Rating';
 import '../../custom.css';
 import HotelTypes from '../../enums/HotelTypes';
 import RoomClassifications from '../../enums/RoomClassifications';
 import { Layout } from '../Layout';
-import withParams from '../../hooks/withParameters';
+import { useParams } from 'react-router-dom';
+import { useAuth } from '../Functions/UserProvider';
 
-function HotelFormFunction(companyId) {
-    const link_back = "/company/" + companyId.companyId;
+export default function HotelForm() {
+    const { companyId } = useParams();
+    const { cookies } = useAuth();
+
+    const link_back = "/company/" + companyId;
+
     const MAX_LATITUDE_LENGTH = 90;
     const MIN_LATITUDE_LENGTH = -90;
     const MAX_LONGITUDE_LENGTH = 180;
@@ -26,6 +31,12 @@ function HotelFormFunction(companyId) {
     const [loaded, setLoaded] = useState(false);
 
     useEffect(() => {
+        if (cookies.name == undefined) {
+            window.location.href = '/login';
+        }
+        if (cookies.level != "Admin" && cookies.level != "Owner") {
+            window.location.href = '/unauthorised';
+        }
         fetch('api/cities')
             .then(response => response.json())
             .then(data => {
@@ -36,7 +47,7 @@ function HotelFormFunction(companyId) {
 
     async function handleClick(e) {
         e.preventDefault();
-        const company = companyId.companyId;
+        const company = companyId;
         window.location.href = link_back;
         if (name != "" || address != "") {
             await fetch('api/hotels', {
@@ -99,7 +110,7 @@ function HotelFormFunction(companyId) {
                 </div>
                 <div className="form-group">
                     <label>Rating:</label><br/>
-                    <Rating name="simple-controlled" value={rating} onChange={(e) => setRating(e.target.value)} />
+                    <Rating name="simple-controlled" size="large" value={rating} onChange={(e) => setRating(e.target.value)} />
                 </div>
                 <div className="row w-50">
                     <div className="form-group col">
@@ -134,19 +145,3 @@ function HotelFormFunction(companyId) {
         </Layout>
     );
 }
-
-class HotelForm extends Component {
-    constructor(props) {
-        super(props);
-        console.log(this.props);
-        this.state = { companyId: this.props.params.companyId };
-    }
-
-    render() {
-        return (
-            <HotelFormFunction companyId={this.state.companyId} />
-        ) 
-    };
-}
-
-export default withParams(HotelForm);

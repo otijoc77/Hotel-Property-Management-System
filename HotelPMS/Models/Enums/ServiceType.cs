@@ -5,6 +5,6 @@
         Repair,
         Cleaning,
         Culinary,
-        Administrative
+        Administrative,
     }
 }

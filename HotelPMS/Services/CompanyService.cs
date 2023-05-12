@@ -45,6 +45,10 @@ namespace HotelPMS.Services
         {
             Company company = await _repository.Company.GetAsync(id);
             company.Hotels = await _repository.Hotel.GetByConditionAsync(hotel => hotel.CompanyId == company.Id);
+            foreach (var hotel in company.Hotels)
+            {
+                hotel.City = await _repository.City.GetAsync(hotel.CityId);
+            }
             company.Employees = await _repository.User.GetByConditionAsync(user => user.CompanyId == company.Id);
             return company;
         }
