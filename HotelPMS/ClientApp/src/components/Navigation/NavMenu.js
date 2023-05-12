@@ -9,45 +9,63 @@ import ApartmentIcon from '@mui/icons-material/Apartment';
 import EqualizerIcon from '@mui/icons-material/Equalizer';
 import PublicIcon from '@mui/icons-material/Public';
 import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
+import WorkIcon from '@mui/icons-material/Work';
+import { useAuth } from '../Functions/UserProvider';
 
-export class NavMenu extends Component {
-    render() {
-        return (
-            <ListGroup flush className="flex-grow-1 separate">
-                <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/"><b><HomeIcon className="icon" />Home</b></NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/user"><b><PersonIcon className="icon" />User</b></NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/metrics"><b><EqualizerIcon className="icon" />Metrics</b></NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/location-register"><b><PublicIcon className="icon" />Locations</b></NavLink>
-                </NavItem>
-                <UncontrolledAccordion flush stayOpen defaultOpen={["1"]}>
-                    <AccordionItem>
-                        <AccordionHeader targetId="1">
-                            <b><BusinessCenterIcon className="icon" />Companies</b>
-                        </AccordionHeader>
-                        <AccordionBody accordionId="1">
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/company-list">Company List</NavLink>
-                            </NavItem>
+export function NavMenu() {
+    const { cookies } = useAuth();
+
+    return (
+        <ListGroup flush className="flex-grow-1 separate">
+            <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/"><b><HomeIcon className="icon" />Home</b></NavLink>
+            </NavItem>
+            <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/user"><b><PersonIcon className="icon" />User</b></NavLink>
+            </NavItem>
+            {cookies.level != "Client" && cookies.level != undefined &&
+                <>
+                    {cookies.level != "Worker" &&
+                        < NavItem >
+                            <NavLink tag={Link} className="text-dark" to="/metrics"><b><EqualizerIcon className="icon" />Metrics</b></NavLink>
+                        </NavItem>
+                    }
+                    {cookies.level == "Admin" &&
+                        <NavItem>
+                            <NavLink tag={Link} className="text-dark" to="/location-register"><b><PublicIcon className="icon" />Locations</b></NavLink>
+                        </NavItem>
+                    }
+                    <NavItem>
+                        <NavLink tag={Link} className="text-dark" to={"/hotel/" + cookies.hotel}><b><WorkIcon className="icon" />My Workplace</b></NavLink>
+                    </NavItem>
+                </>
+            }
+            <UncontrolledAccordion flush stayOpen defaultOpen={["1"]}>
+                <AccordionItem>
+                    <AccordionHeader targetId="1">
+                        <b><BusinessCenterIcon className="icon" />Companies</b>
+                    </AccordionHeader>
+                    <AccordionBody accordionId="1">
+                        <NavItem>
+                            <NavLink tag={Link} className="text-dark" to="/company-list">Company List</NavLink>
+                        </NavItem>
+                        {cookies.level == "Admin" &&
                             <NavItem>
                                 <NavLink tag={Link} className="text-dark" to="/company-register">Company Form</NavLink>
                             </NavItem>
-                        </AccordionBody>
-                    </AccordionItem>
-                </UncontrolledAccordion>
-                <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/hotel-list"><b><ApartmentIcon className="icon" />Hotels</b></NavLink>
-                </NavItem>
+                        }
+                    </AccordionBody>
+                </AccordionItem>
+            </UncontrolledAccordion>
+            <NavItem>
+                <NavLink tag={Link} className="text-dark" to="/hotel-list"><b><ApartmentIcon className="icon" />Hotels</b></NavLink>
+            </NavItem>
+            {
+                cookies.level == "Admin" &&
                 <NavItem>
                     <NavLink tag={Link} className="text-dark" to="/users"><b><PeopleAltIcon className="icon" />Users</b></NavLink>
                 </NavItem>
-            </ListGroup>
-        );
-    }
+            }
+        </ListGroup >
+    );
 }

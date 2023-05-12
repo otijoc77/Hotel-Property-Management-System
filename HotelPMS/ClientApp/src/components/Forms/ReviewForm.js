@@ -2,10 +2,11 @@
 import { Row, Col } from 'reactstrap';
 import Rating from '@mui/material/Rating';
 import '../../custom.css';
-import withParams from '../../hooks/withParameters';
 import { useAuth } from '../Functions/UserProvider';
+import { useParams } from 'react-router-dom';
 
-export function ReviewFormFunction(hotelId) {
+export default function ReviewForm() {
+    const { id } = useParams();
     const { cookies } = useAuth();
 
     const [rating, setRating] = useState(0);
@@ -26,8 +27,8 @@ export function ReviewFormFunction(hotelId) {
                 rating: rating,
                 text: text,
                 anonymous: anonymous,
-                hotelId: hotelId.hotelId,
-                userId: "0",
+                hotelId: id,
+                userId: cookies.user,
             })
         })
             .then(response => {
@@ -68,19 +69,3 @@ export function ReviewFormFunction(hotelId) {
         </>
     );
 }
-
-class ReviewForm extends Component {
-    constructor(props) {
-        super(props);
-        console.log(this.props);
-        this.state = { hotelId: this.props.params.id };
-    }
-
-    render() {
-        return (
-            <ReviewFormFunction hotelId={this.state.hotelId} />
-        )
-    };
-}
-
-export default withParams(ReviewForm);

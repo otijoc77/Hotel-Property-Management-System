@@ -19,7 +19,8 @@ export function MetricsPage() {
         if (cookies.level == "Client" || cookies.level == "Worker") {
             window.location.href = '/unauthorised';
         }
-        fetch('api/metrics/' + cookies.hotel)
+        //TODO: fix
+        fetch('api/metrics/' + 1)
             .then(response => response.json())
             .then(data => {
                 setState({
@@ -37,6 +38,7 @@ export function MetricsPage() {
                     <div className="card p-3">
                         <Row>
                             <Col>
+                                <h3>Currently booked: <strong>{state.metrics.currentlyBooked * 100 / state.metrics.rooms}%</strong></h3>
                             </Col>
                             <Col>
                             </Col>

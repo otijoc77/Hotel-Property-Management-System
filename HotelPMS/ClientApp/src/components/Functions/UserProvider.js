@@ -32,7 +32,7 @@ export const UserProvider = ({ children }) => {
             setCookies('name', res.account.username);
             setCookies('level', res.account.level);
             setCookies('user', res.userId);
-            setCookies('hotel', res.hotelId);
+            setCookies('hotel', res.companyId);
             window.location.href = '/';
         }
         else {
@@ -42,7 +42,7 @@ export const UserProvider = ({ children }) => {
 
     const logout = () => {
         ['token', 'name', 'level', 'user', 'hotel'].forEach(obj => removeCookie(obj));
-        //window.location.href = '/';
+        window.location.href = '/';
     };
 
     const value = useMemo(

@@ -97,6 +97,9 @@ export default function Floorplan() {
     }
 
     useEffect(() => {
+        if (cookies.name == undefined) {
+            window.location.href = '/login';
+        }
         fetch('api/floors/hotel/' + hotelId)
             .then(response => response.json())
             .then(data => {
@@ -144,7 +147,7 @@ export default function Floorplan() {
                                 .rooms.find((room) => { return room.id == request.sender.roomId });
                             room.activeRequests.push(request);
                             setState({ ...state, floors: allFloors.current });
-                            if (cookies.level != "Client") {
+                            if (cookies.level != "Client" || cookies.hotel == hotelId) {
                                 console.log(cookies.level);
                                 console.log(cookies.level != "Client");
                                 setStyle(st => ({

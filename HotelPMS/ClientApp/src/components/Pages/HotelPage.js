@@ -6,9 +6,11 @@ import { Layout } from '../Layout';
 import { ReviewTable } from '../Lists/ReviewTable';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { useAuth } from '../Functions/UserProvider';
 
 export default function HotelPage() {
     const { id } = useParams();
+    const { cookies } = useAuth();
 
     const link_edit = '/hotel/' + id + '/edit';
     const link_floorplan = '/hotel/' + id + '/floorplan';
@@ -66,13 +68,15 @@ export default function HotelPage() {
                                     <p className="bold">{state.hotel.roomClassification}</p>
                                 </Col>
                             </Row>
-                            <Row>
-                                <button className="btn btn-dark w-100p margin-2" onClick={e => window.location.href = link_edit} >Edit</button>
-                                <button className="btn btn-danger btn-red w-100p margin-2" onClick={e => deleteClick()} >Delete</button>
-                            </Row>
+                            {(cookies.level == "Admin" || cookies.level == "Owner") &&
+                                <Row>
+                                    <button className="btn btn-dark w-100p margin-2" onClick={e => window.location.href = link_edit} >Edit</button>
+                                    <button className="btn btn-danger btn-red w-100p margin-2" onClick={e => deleteClick()} >Delete</button>
+                                </Row>
+                            }
                             <Row>
                                 <button className="btn btn-dark w-200p margin-b-5 margin-2" onClick={e => window.location.href = link_floorplan} >Floorplan</button>
-                                <button className="btn btn-dark w-200p margin-b-5 margin-2" >Make Reservation</button>
+                                {/*<button className="btn btn-dark w-200p margin-b-5 margin-2" >Make Reservation</button>*/}
                             </Row>
                         </div>
                     </Col>

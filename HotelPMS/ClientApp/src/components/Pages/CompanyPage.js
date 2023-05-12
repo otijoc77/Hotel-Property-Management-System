@@ -79,12 +79,12 @@ export default function CompanyPage() {
                 }
                 {state.loaded &&
                     <>
-                    <HotelTable passedHotels={state.company.hotels} />
-                        {cookies.level == "Admin" || cookies.level == "Owner" ? 
+                        <HotelTable passedHotels={state.company.hotels} />
+                        {cookies.level == "Admin" || cookies.level == "Owner" ?
                             state.company.employees.length > 0 ?
                                 <UserTable users={state.company.employees} admin={false} /> :
                                 <p><em>No registered employees.</em></p>
-                        : <></>
+                            : <></>
                         }
                     </>
                 }

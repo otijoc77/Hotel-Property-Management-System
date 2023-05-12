@@ -45,6 +45,7 @@ export function UserPage() {
                         list: data,
                         loaded: true
                     });
+                    console.log('data',data)
                 });
         }
     }, [state.loading]);

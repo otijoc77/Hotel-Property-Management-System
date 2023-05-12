@@ -116,7 +116,7 @@ export default function ReservationPage() {
                                 </Row>
                                 {cookies.user == state.reservation.userId &&
                                     <Row>
-                                        {!state.reservation.checkedIn && state.reservation.start >= dayjs() && <button className="btn btn-dark w-100p margin-2" onClick={e => checkIn()} >Check In</button>}
+                                        {!state.reservation.checkedIn && <button className="btn btn-dark w-100p margin-2" onClick={e => checkIn()} >Check In</button>}
                                         <button className="btn btn-danger btn-red w-100p margin-2" onClick={e => cancelClick()} >Cancel</button>
                                     </Row>
                                 }

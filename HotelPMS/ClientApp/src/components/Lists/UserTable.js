@@ -49,7 +49,7 @@ export function UserTable(props) {
             serviceType: props.user.serviceType,
             accountId: props.user.accountId,
             companyId: props.companyId,
-            hotelId: props.user.hotelId,
+            hotelId: props.companyId,
         }));
         await fetch('api/users/', {
             method: 'PUT',
@@ -94,7 +94,9 @@ export function UserTable(props) {
                 <thead className='table-head'>
                     <tr>
                         <th>Name</th>
-                        <th>Username</th>
+                        {props.users[0].account &&
+                            <th>Username</th>
+                        }
                         <th>Email</th>
                         <th>Phone Number</th>
                         {props.admin &&
@@ -106,10 +108,12 @@ export function UserTable(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.users.map(user => user.account != null &&
+                    {props.users.map(user =>
                         <tr key={user.id}>
                             <td>{user.name} {user.surname}</td>
-                            <td>{user.account.username}</td>
+                            {user.account &&
+                                <td>{user.account.username}</td>
+                            }
                             <td>{user.email}</td>
                             <td>{user.phoneNumber}</td>
                             {props.admin && loaded &&
