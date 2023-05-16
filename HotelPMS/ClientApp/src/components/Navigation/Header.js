@@ -33,7 +33,6 @@ export function Header() {
 			</NavItem>
 		);
 	}
-	//TODO: delete console log
 	return (
 		<header className="wide">
 			{console.log(cookies.name + " " + cookies.level)}

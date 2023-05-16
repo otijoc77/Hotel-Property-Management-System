@@ -19,7 +19,6 @@ export function MetricsPage() {
 		if (cookies.level == "Client" || cookies.level == "Worker") {
 			window.location.href = "/unauthorised";
 		}
-		//TODO: fix
 		fetch("api/metrics/" + cookies.hotel)
 			.then((response) => response.json())
 			.then((data) => {
