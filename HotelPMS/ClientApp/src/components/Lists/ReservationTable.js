@@ -1,8 +1,11 @@
-﻿import React, { Component, useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import '../../custom.css';
 import dayjs from 'dayjs';
+import { useAuth } from '../Functions/UserProvider';
 
 export function ReservationTable(props) {
+    const { cookies } = useAuth();
+
     const [state, setState] = useState({
         reservations: [],
         userId: props.userId,
@@ -10,7 +13,13 @@ export function ReservationTable(props) {
     });
 
     async function getReservations() {
-        const response = await fetch('api/reservations/user/' + state.userId);
+        let response = [];
+        if (cookies.level != "Client") {
+            response = await fetch('api/reservations/hotel/' + cookies.hotel);
+        }
+        else {
+            response = await fetch('api/reservations/user/' + state.userId);
+        }
         const data = await response.json();
         setState({ reservations: data, loading: false });
     }

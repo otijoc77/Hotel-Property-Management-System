@@ -77,7 +77,9 @@ export function UserPage() {
                             </Col>
                         </Row>
                     </div>
-                    <ReservationTable userId={state.id} />
+                    {cookies.level != "Admin" &&
+                        <ReservationTable userId={state.id} />
+                    }
                     {requests.loaded && < RequestTable propRequests={requests} />}
                 </Container>
             }

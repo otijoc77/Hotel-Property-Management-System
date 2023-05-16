@@ -48,8 +48,8 @@ export default function HotelForm() {
     async function handleClick(e) {
         e.preventDefault();
         const company = companyId;
-        window.location.href = link_back;
         if (name != "" || address != "") {
+            window.location.href = link_back;
             await fetch('api/hotels', {
                 method: 'POST',
                 mode: 'cors',

@@ -32,7 +32,8 @@ export const UserProvider = ({ children }) => {
             setCookies('name', res.account.username);
             setCookies('level', res.account.level);
             setCookies('user', res.userId);
-            setCookies('hotel', res.companyId);
+            setCookies('hotel', res.hotelId);
+            setCookies('company', res.companyId);
             window.location.href = '/';
         }
         else {

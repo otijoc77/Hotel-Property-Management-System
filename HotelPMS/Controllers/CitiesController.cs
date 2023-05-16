@@ -6,7 +6,7 @@ namespace HotelPMS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CitiesController : ControllerBase
+    public class CitiesController : ControllerBase, IControllerActions<City>
     {
         private readonly ILogger<CitiesController> _logger;
         private readonly IRepositoryWrapper _cityRepository;
@@ -18,32 +18,32 @@ namespace HotelPMS.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<City>>> GetCities()
+        public async Task<ActionResult<IEnumerable<City>>> Get()
         {
             return await _cityRepository.City.GetAllAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<City>> GetCity(int id)
+        public async Task<ActionResult<City>> Get(int id)
         {
             return await _cityRepository.City.GetAsync(id);
         }
 
         [HttpPost]
-        public async Task<ActionResult<City>> PostCity(City city)
+        public async Task<ActionResult<City>> Post(City city)
         {
             await _cityRepository.City.AddAsync(city);
-            return CreatedAtAction(nameof(GetCity), new { id = city.Id }, city);
+            return CreatedAtAction(nameof(Get), new { id = city.Id }, city);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<City>> DeleteCity(int id)
+        public async Task<ActionResult<City>> Delete(int id)
         {
             return await _cityRepository.City.DeleteAsync(id);
         }
 
         [HttpPut]
-        public async Task<ActionResult<City>> PutCity(City city)
+        public async Task<ActionResult<City>> Put(City city)
         {
             return await _cityRepository.City.UpdateAsync(city);
         }

@@ -6,7 +6,7 @@ namespace HotelPMS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HotelsController : ControllerBase
+    public class HotelsController : ControllerBase, IControllerActions<Hotel>
     {
         private readonly ILogger<HotelsController> _logger;
         private readonly IHotelService _hotelService;
@@ -18,7 +18,7 @@ namespace HotelPMS.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Hotel>>> GetHotels()
+        public async Task<ActionResult<IEnumerable<Hotel>>> Get()
         {
             return await _hotelService.GetAllAsync();
         }
@@ -29,27 +29,33 @@ namespace HotelPMS.Controllers
             return await _hotelService.GetByConditionAsync(hotel => hotel.City!.Name.Contains(city));
         }
 
+        [HttpGet("company/{id}")]
+        public async Task<ActionResult<IEnumerable<Hotel>>> GetHotels(int id)
+        {
+            return await _hotelService.GetByConditionAsync(hotel => hotel.CompanyId == id);
+        }
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<Hotel>> GetHotel(int id)
+        public async Task<ActionResult<Hotel>> Get(int id)
         {
             return await _hotelService.GetByIdAsync(id);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Hotel>> PostHotel(Hotel hotel)
+        public async Task<ActionResult<Hotel>> Post(Hotel hotel)
         {
             await _hotelService.CreateAsync(hotel);
-            return CreatedAtAction(nameof(GetHotel), new { id = hotel.Id }, hotel);
+            return CreatedAtAction(nameof(Get), new { id = hotel.Id }, hotel);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Hotel>> DeleteHotel(int id)
+        public async Task<ActionResult<Hotel>> Delete(int id)
         {
             return await _hotelService.DeleteAsync(id);
         }
 
         [HttpPut]
-        public async Task<ActionResult<Hotel>> PutHotel(Hotel hotel)
+        public async Task<ActionResult<Hotel>> Put(Hotel hotel)
         {
             return await _hotelService.UpdateAsync(hotel);
         }

@@ -6,7 +6,7 @@ namespace HotelPMS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FloorsController : ControllerBase
+    public class FloorsController : ControllerBase, IControllerActions<Floor>
     {
         private readonly ILogger<FloorsController> _logger;
         private readonly IFloorService _floorService;
@@ -18,7 +18,7 @@ namespace HotelPMS.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Floor>>> GetFloors()
+        public async Task<ActionResult<IEnumerable<Floor>>> Get()
         {
             return await _floorService.GetAllAsync();
         }
@@ -30,26 +30,26 @@ namespace HotelPMS.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Floor>> GetFloor(int id)
+        public async Task<ActionResult<Floor>> Get(int id)
         {
             return await _floorService.GetByIdAsync(id);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Floor>> PostFloor(Floor floor)
+        public async Task<ActionResult<Floor>> Post(Floor floor)
         {
             await _floorService.CreateAsync(floor);
-            return CreatedAtAction(nameof(GetFloor), new { id = floor.Id }, floor);
+            return CreatedAtAction(nameof(Get), new { id = floor.Id }, floor);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Floor>> DeleteFloor(int id)
+        public async Task<ActionResult<Floor>> Delete(int id)
         {
             return await _floorService.DeleteAsync(id);
         }
 
         [HttpPut]
-        public async Task<ActionResult<Floor>> PutFloor(Floor floor)
+        public async Task<ActionResult<Floor>> Put(Floor floor)
         {
             return await _floorService.UpdateAsync(floor);
         }

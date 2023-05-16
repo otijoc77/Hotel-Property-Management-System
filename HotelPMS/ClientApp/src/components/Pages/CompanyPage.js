@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { Row, Container } from 'reactstrap';
+import { Row, Col, Container } from 'reactstrap';
 import { HotelTable } from '../Lists/HotelTable';
 import '../../custom.css';
 import { Layout } from '../Layout';
@@ -8,7 +8,7 @@ import { useParams } from 'react-router-dom';
 import { useAuth } from '../Functions/UserProvider';
 
 export default function CompanyPage() {
-    const size = 200;
+    const size = 150;
     const { id } = useParams();
     const link_hotel = '/company/' + id + '/hotel-register';
     const link_back = '/company-list';
@@ -48,23 +48,26 @@ export default function CompanyPage() {
 
     return (
         <Layout>
-            {console.log(state.company)}
-            <h1 id="name" >{state.company.name}</h1>
             <Container>
-                <Row>
-                    {(state.company.logo != null && state.company.logo != "") &&
-                        <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size}>
-                            <image
-                                display="flex"
-                                overflow="visible"
-                                width={size}
-                                height={size}
-                                href={state.company.logo}
-                            />
-                        </svg>
-                    }
-                    <p>{state.company.description}</p>
+                <Row className="w-25">
+                    <Col>
+                        {(state.company.logo != null && state.company.logo != "") &&
+                            <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size}>
+                                <image
+                                    display="flex"
+                                    overflow="visible"
+                                    width={size}
+                                    height={size}
+                                    href={state.company.logo}
+                                />
+                            </svg>
+                        }
+                    </Col>
+                    <Col>
+                        <h1 id="name" className="">{state.company.name}</h1>
+                    </Col>
                 </Row>
+                <p>{state.company.description}</p>
                 {cookies.level == "Admin" || cookies.level == "Owner" ?
                     <>
                         <Row>

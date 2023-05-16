@@ -6,7 +6,7 @@ namespace HotelPMS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsersController : ControllerBase
+    public class UsersController : ControllerBase, IControllerActions<User>
     {
         private readonly ILogger<UsersController> _logger;
         private readonly IUserService _userService;
@@ -18,13 +18,13 @@ namespace HotelPMS.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public async Task<ActionResult<IEnumerable<User>>> Get()
         {
             return await _userService.GetAllAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
+        public async Task<ActionResult<User>> Get(int id)
         {
             return await _userService.GetByIdAsync(id);
         }
@@ -42,20 +42,20 @@ namespace HotelPMS.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        public async Task<ActionResult<User>> Post(User user)
         {
             await _userService.CreateAsync(user);
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+            return CreatedAtAction(nameof(Get), new { id = user.Id }, user);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<User>> DeleteUser(int id)
+        public async Task<ActionResult<User>> Delete(int id)
         {
             return await _userService.DeleteAsync(id);
         }
 
         [HttpPut]
-        public async Task<ActionResult<User>> PutUser(User user)
+        public async Task<ActionResult<User>> Put(User user)
         {
             return await _userService.UpdateAsync(user);
         }

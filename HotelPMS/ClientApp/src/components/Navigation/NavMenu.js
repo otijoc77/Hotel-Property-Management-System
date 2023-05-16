@@ -35,9 +35,11 @@ export function NavMenu() {
                             <NavLink tag={Link} className="text-dark" to="/location-register"><b><PublicIcon className="icon" />Locations</b></NavLink>
                         </NavItem>
                     }
-                    <NavItem>
-                        <NavLink tag={Link} className="text-dark" to={"/hotel/" + cookies.hotel}><b><WorkIcon className="icon" />My Workplace</b></NavLink>
-                    </NavItem>
+                    {cookies.level != "Admin" &&
+                        <NavItem>
+                            <NavLink tag={Link} className="text-dark" to={"/hotel/" + cookies.hotel}><b><WorkIcon className="icon" />My Workplace</b></NavLink>
+                        </NavItem>
+                    }
                 </>
             }
             <UncontrolledAccordion flush stayOpen defaultOpen={["1"]}>
@@ -61,9 +63,9 @@ export function NavMenu() {
                 <NavLink tag={Link} className="text-dark" to="/hotel-list"><b><ApartmentIcon className="icon" />Hotels</b></NavLink>
             </NavItem>
             {
-                cookies.level == "Admin" &&
+                cookies.level != "Client" && cookies.level != "Worker" && cookies.level != undefined &&
                 <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/users"><b><PeopleAltIcon className="icon" />Users</b></NavLink>
+                        <NavLink tag={Link} className="text-dark" to="/users"><b><PeopleAltIcon className="icon" />{cookies.level == "Admin" ? "Users" : "Employees"}</b></NavLink>
                 </NavItem>
             }
         </ListGroup >

@@ -20,7 +20,7 @@ export function MetricsPage() {
             window.location.href = '/unauthorised';
         }
         //TODO: fix
-        fetch('api/metrics/' + 1)
+        fetch('api/metrics/' + cookies.hotel)
             .then(response => response.json())
             .then(data => {
                 setState({

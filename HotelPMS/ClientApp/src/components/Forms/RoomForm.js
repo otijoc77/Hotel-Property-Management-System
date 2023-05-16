@@ -36,8 +36,8 @@ export default function RoomForm() {
 
     async function handleClick(e) {
         e.preventDefault();
-        window.location.href = link_back;
         if (number != 0 || area != 0 || type != "" || border != "") {
+            window.location.href = link_back;
             await fetch('api/rooms', {
                 method: 'POST',
                 mode: 'cors',

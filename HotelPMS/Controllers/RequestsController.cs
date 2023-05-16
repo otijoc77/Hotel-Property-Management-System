@@ -10,7 +10,7 @@ namespace HotelPMS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RequestsController : ControllerBase
+    public class RequestsController : ControllerBase, IControllerActions<Request>
     {
         private readonly ILogger<RequestsController> _logger;
         private readonly IRequestService _requestService;
@@ -24,13 +24,13 @@ namespace HotelPMS.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Request>>> GetRequests()
+        public async Task<ActionResult<IEnumerable<Request>>> Get()
         {
             return await _requestService.GetAllAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Request>> GetRequest(int id)
+        public async Task<ActionResult<Request>> Get(int id)
         {
             return await _requestService.GetByIdAsync(id);
         }
@@ -42,21 +42,21 @@ namespace HotelPMS.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Request>> PostRequest(Request request)
+        public async Task<ActionResult<Request>> Post(Request request)
         {
             await _requestService.CreateAsync(request);
             await _hub.Clients.All.ReceiveRequest(request);
-            return CreatedAtAction(nameof(GetRequest), new { id = request.Id }, request);
+            return CreatedAtAction(nameof(Get), new { id = request.Id }, request);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Request>> DeleteRequest(int id)
+        public async Task<ActionResult<Request>> Delete(int id)
         {
             return await _requestService.DeleteAsync(id);
         }
 
         [HttpPut]
-        public async Task<ActionResult<Request>> PutRequest(Request request)
+        public async Task<ActionResult<Request>> Put(Request request)
         {
             return await _requestService.UpdateAsync(request);
         }

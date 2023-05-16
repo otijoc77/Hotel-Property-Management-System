@@ -31,6 +31,9 @@ export function Header() {
             {console.log(cookies.name + ' ' + cookies.level)}
             <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3 color" container light>
                 <NavbarBrand className="text-light title" tag={Link} to="/">HOLTLEY</NavbarBrand>
+                {cookies.name != undefined &&
+                    <NavLink className="text-light" tag={Link} to="/"><em>{cookies.level}</em></NavLink>
+                }
                 <NavbarToggler onClick={e => toggleNavbar()} className="mr-2" />
                 <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!state.collapsed} navbar>
                     <ul className="navbar-nav flex-grow">

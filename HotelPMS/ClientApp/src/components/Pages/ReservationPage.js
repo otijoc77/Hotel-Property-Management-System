@@ -94,6 +94,7 @@ export default function ReservationPage() {
             {state.loaded &&
                 <Container>
                     <Row>
+                        <h1 id="name" ><strong>{state.reservation.user.name} {state.reservation.user.surname}</strong></h1>
                         <h1 id="name" >Hotel: <strong>{state.reservation.hotel.name}</strong></h1>
                         <h2 id="number" >Room number: <strong>{state.reservation.room.number}</strong></h2>
                     </Row>

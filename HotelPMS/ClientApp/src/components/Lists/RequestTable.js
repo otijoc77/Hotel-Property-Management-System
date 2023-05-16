@@ -76,7 +76,7 @@ export function RequestTable(props) {
 
     return (
         <>
-            {state.requests.length == 0
+            {state.requests.length == 0 || state.requests.length == undefined
                 ? <p><em>No requests.</em></p>
                 :
                 <div>

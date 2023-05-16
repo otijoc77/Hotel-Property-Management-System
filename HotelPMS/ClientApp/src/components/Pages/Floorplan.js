@@ -125,7 +125,7 @@ export default function Floorplan() {
                     : "#79ff4d";
                 setStyle((st) => ({
                     ...st,
-                    [room.id]: { fill: filling, opacity: "95%", stroke: "#a6a6a6", strokeWidth: "2" }
+                    [room.id]: { fill: filling, opacity: "95%", stroke: "black", strokeWidth: "2" }
                 }));
             })
         })

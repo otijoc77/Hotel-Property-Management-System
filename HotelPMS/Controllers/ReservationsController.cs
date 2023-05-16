@@ -6,7 +6,7 @@ namespace HotelPMS.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ReservationsController : ControllerBase
+    public class ReservationsController : ControllerBase, IControllerActions<Reservation>
     {
         private readonly ILogger<ReservationsController> _logger;
         private readonly IReservationService _reservationService;
@@ -18,13 +18,13 @@ namespace HotelPMS.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Reservation>>> GetReservations()
+        public async Task<ActionResult<IEnumerable<Reservation>>> Get()
         {
             return await _reservationService.GetAllAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Reservation>> GetReservation(int id)
+        public async Task<ActionResult<Reservation>> Get(int id)
         {
             return await _reservationService.GetByIdAsync(id);
         }
@@ -41,21 +41,28 @@ namespace HotelPMS.Controllers
             return await _reservationService.GetByConditionAsync(reservation => reservation.RoomId.Equals(id));
         }
 
+        [HttpGet("hotel/{id}")]
+        public async Task<ActionResult<IEnumerable<Reservation>>> GetReservationsByHotel(int id)
+        {
+            return await _reservationService.GetByConditionAsync(reservation => reservation.HotelId.Equals(id)
+                                                                                && reservation.End > DateTime.UtcNow);
+        }
+
         [HttpPost]
-        public async Task<ActionResult<Reservation>> PostReservation(Reservation reservation)
+        public async Task<ActionResult<Reservation>> Post(Reservation reservation)
         {
             await _reservationService.CreateAsync(reservation);
-            return CreatedAtAction(nameof(GetReservation), new { id = reservation.Id }, reservation);
+            return CreatedAtAction(nameof(Get), new { id = reservation.Id }, reservation);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Reservation>> DeleteReservation(int id)
+        public async Task<ActionResult<Reservation>> Delete(int id)
         {
             return await _reservationService.DeleteAsync(id);
         }
 
         [HttpPut]
-        public async Task<ActionResult<Reservation>> PutReservation(Reservation reservation)
+        public async Task<ActionResult<Reservation>> Put(Reservation reservation)
         {
             return await _reservationService.UpdateAsync(reservation);
         }

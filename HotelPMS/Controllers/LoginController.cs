@@ -11,13 +11,11 @@ namespace HotelPMS.Controllers
     public class LoginController : ControllerBase
     {
         private readonly ILogger<LoginController> _logger;
-        private readonly IAccountService _accountService;
         private readonly IRepositoryWrapper _repository;
 
-        public LoginController(ILogger<LoginController> logger, IAccountService service, IRepositoryWrapper repository)
+        public LoginController(ILogger<LoginController> logger, IRepositoryWrapper repository)
         {
             _logger = logger;
-            _accountService = service;
             _repository = repository;
         }
 

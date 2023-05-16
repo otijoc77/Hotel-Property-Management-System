@@ -28,7 +28,7 @@ export function LoginForm() {
                     <label className="d-block center w-50">Password:</label>
                     <input type="password" name="password" className="form-control w-50 center" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 </div>
-                <button type="button" className="btn btn-dark d-block center w-25 margin-b-5" onClick={(e) => handleClick(e)}>Login</button>
+                <button type="button" className="btn btn-dark d-block center w-25 margin-b-5" onClick={(e) => handleClick(e)} disabled={username == "" || password == ""}>Login</button>
             </form>
         </div>
     );

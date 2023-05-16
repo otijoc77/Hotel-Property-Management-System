@@ -38,7 +38,7 @@ export function CompanyList() {
             :
             <div>
                 {state.companies.map(company =>
-                    <div className="card p-2 margin-b-20 border-light" key={company.id} onClick={() => handleRowClick(company.id)}>
+                    <div className="card p-2 margin-b-20 border-light w-75" key={company.id} onClick={() => handleRowClick(company.id)}>
                         <Row>
                             <Col>
                                 <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size}>
@@ -52,9 +52,9 @@ export function CompanyList() {
                                 </svg>
                             </Col>
                             <Col>
-                                <h2>{company.name}</h2>
+                                <h1>{company.name}</h1>
                             </Col>
-                            <Col>
+                            <Col xs={7}>
                                 <p>{company.description}</p>
                             </Col>
                         </Row>
