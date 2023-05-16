@@ -20,94 +20,94 @@ import { MetricsPage } from "./components/Pages/MetricsPage";
 import { UnauthorisedPage } from "./components/Pages/UnauthorisedPage";
 
 const AppRoutes = [
-    {
-        index: true,
-        element: <HomePage />
-    },
-    {
-        path: '/company-register',
-        element: <CompanyForm />
-    },
-    {
-        path: '/company/:id/edit',
-        element: <CompanyForm />
-    },
-    {
-        path: '/company/:id',
-        element: <CompanyPage />
-    },
-    {
-        path: '/company-list',
-        element: <CompanyList />
-    },
-    {
-        path: '/hotel-list',
-        element: <HotelList />
-    },
-    {
-        path: '/company/:companyId/hotel-register',
-        element: <HotelForm />
-    },
-    {
-        path: '/hotel/:id/edit',
-        element: <HotelForm />
-    },
-    {
-        path: '/hotel/:id',
-        element: <HotelPage />
-    },
-    {
-        path: '/hotel/:hotelId/floorplan',
-        element: <Floorplan />
-    },
-    {
-        path: '/hotel/:hotelId/floorplan/:id',
-        element: <Floorplan />
-    },
-    {
-        path: '/hotel/:hotelId/floor-register',
-        element: <FloorForm />
-    },
-    {
-        path: '/hotel/:hotelId/floor/:floorId',
-        element: <RoomForm />
-    },
-    {
-        path: '/user',
-        element: <UserPage />
-    },
-    {
-        path: '/reservation/:id',
-        element: <ReservationPage />
-    },
-    {
-        path: '/location-register',
-        element: <Locations />
-    },
-    {
-        path: '/users',
-        element: <UserList />
-    },
-    {
-        path: '/login',
-        element: <LoginForm />
-    },
-    {
-        path: '/register',
-        element: <RegisterForm />
-    },
-    {
-        path: '/reservation',
-        element: <ReservationForm />
-    },
-    {
-        path: '/metrics',
-        element: <MetricsPage />
-    },
-    {
-        path: '/unauthorised',
-        element: <UnauthorisedPage />
-    },
+	{
+		index: true,
+		element: <HomePage />,
+	},
+	{
+		path: "/company-register",
+		element: <CompanyForm />,
+	},
+	{
+		path: "/company/:id/edit",
+		element: <CompanyForm />,
+	},
+	{
+		path: "/company/:id",
+		element: <CompanyPage />,
+	},
+	{
+		path: "/company-list",
+		element: <CompanyList />,
+	},
+	{
+		path: "/hotel-list",
+		element: <HotelList />,
+	},
+	{
+		path: "/company/:companyId/hotel-register",
+		element: <HotelForm />,
+	},
+	{
+		path: "/hotel/:id/edit",
+		element: <HotelForm />,
+	},
+	{
+		path: "/hotel/:id",
+		element: <HotelPage />,
+	},
+	{
+		path: "/hotel/:hotelId/floorplan",
+		element: <Floorplan />,
+	},
+	{
+		path: "/hotel/:hotelId/floorplan/:id",
+		element: <Floorplan />,
+	},
+	{
+		path: "/hotel/:hotelId/floor-register",
+		element: <FloorForm />,
+	},
+	{
+		path: "/hotel/:hotelId/floor/:floorId",
+		element: <RoomForm />,
+	},
+	{
+		path: "/user",
+		element: <UserPage />,
+	},
+	{
+		path: "/reservation/:id",
+		element: <ReservationPage />,
+	},
+	{
+		path: "/location-register",
+		element: <Locations />,
+	},
+	{
+		path: "/users",
+		element: <UserList />,
+	},
+	{
+		path: "/login",
+		element: <LoginForm />,
+	},
+	{
+		path: "/register",
+		element: <RegisterForm />,
+	},
+	{
+		path: "/reservation",
+		element: <ReservationForm />,
+	},
+	{
+		path: "/metrics",
+		element: <MetricsPage />,
+	},
+	{
+		path: "/unauthorised",
+		element: <UnauthorisedPage />,
+	},
 ];
 
 export default AppRoutes;
